@@ -25,6 +25,15 @@ class BaseModel(models.Model):
         abstract = True
 
 
+class UserSignUps(models.Model):
+    """Model to store user signups data."""
+    id = models.AutoField(primary_key=True)
+    email = models.EmailField(null=False, blank=False)
+    sign_up_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'user_signups'
+
 
 
 class ProfileSettings(BaseModel, AbstractUser):
@@ -39,8 +48,10 @@ class ProfileSettings(BaseModel, AbstractUser):
         super().save()
 
     def get_user_uuid(self):
-        id = self.id
+        id = self.id    
         return id
     
     class Meta:
         db_table = 'profile_settings'
+
+

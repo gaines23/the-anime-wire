@@ -30,11 +30,14 @@ from django.contrib.auth import get_user_model
 
 from .models import (
     ProfileSettings,
+    UserSignUps
 )
 from .serializers import (
     NewTokenObtainPairSerializer
     , UserCreateSerializer
-    , UserUpdatePassword)
+    , UserUpdatePassword
+    , SignUpsSerializer
+)
 
 
 env = environ.Env()
@@ -119,3 +122,10 @@ class UserChangePassword(APIView):
     
 
 
+class SignUps(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = SignUpsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

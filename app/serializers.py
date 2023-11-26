@@ -6,7 +6,8 @@ from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .models import (
-    ProfileSettings
+    ProfileSettings,
+    UserSignUps,
 )
         
 class NewTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -53,3 +54,14 @@ class UserUpdatePassword(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
 
+
+
+class SignUpsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserSignUps
+        fields = '__all__'
+
+    def create(self, validated_data):
+        validated_data['sign_up_date'] = datetime.now()
+        instance = UserSignUps.objects.create(**validated_data)
+        return instance

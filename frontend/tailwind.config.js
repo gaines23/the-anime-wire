@@ -7,6 +7,10 @@ module.exports = {
       extend: {
         colors: {
           'text-white': '#F7F8FD',
+          'light-grey': '#BABABA',
+          'bg-fill': '#FFFFFF',
+          'dark-purple': '#160224',
+          'text-purple': '#7843E6',
         },
         height: {
           '38': '10rem',

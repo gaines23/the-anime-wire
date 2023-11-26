@@ -6,6 +6,7 @@ from app.views import (
     NewTokenObtainPairView,
     UserChangePassword,
     UserAutoChangePassword,
+    SignUps,
 )
 
 from rest_framework_simplejwt.views import (
@@ -21,4 +22,5 @@ urlpatterns = [
     path('update-password/', UserChangePassword.as_view(), name='password'),
     path('auto-update-password/', UserAutoChangePassword.as_view(), name='auto_password'),
  
+    path('new-user/signups/', SignUps.as_view(), name='user_signups'),
 ]
