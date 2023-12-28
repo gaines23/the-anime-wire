@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'animewire.io', 
-    'www.anime-wire.io', 
+    'www.animewire.io', 
     '204.236.150.98',
     'localhost', 
     '127.0.0.1', 

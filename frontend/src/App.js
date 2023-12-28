@@ -29,7 +29,7 @@ function App() {
         }
       >
         <Routes>
-          {!isAuth && (
+          {/* {!isAuth && (
             <Fragment>
               <Route path='/login' element={<Login />} />
               <Route path='/' element={<Login />} />
@@ -43,7 +43,14 @@ function App() {
 
               <Route path='*' element={<NotFound />} />
             </Fragment>
-          )}
+          )} */}
+
+          <Fragment>
+              <Route path='/' element={<Navigate to='/home' />} />
+              <Route path='/home' element={<Home />} />
+
+              <Route path='*' element={<NotFound />} />
+            </Fragment>
         </Routes>
       </Suspense>
     </Layout>
