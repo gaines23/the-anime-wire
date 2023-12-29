@@ -86,10 +86,10 @@ export async function getUserRegisteration(credentials) {
 }
 
 
-export async function postUserSignups(info) {
-    const response = await fetch(`${user_signups}`, {
+export async function postUserSignups(email) {
+    const response = await fetch(user_signups, {
         method: 'POST',
-        body: JSON.stringify(info),
+        body: JSON.stringify(email),
         headers: {
             'Content-Type': 'application/json',
         }

@@ -14,12 +14,12 @@ const NotFound = React.lazy(() => import ('./Pages/NotFound'));
 
 function App() {
 
-  const [isAuth, setIsAuth] = useState(false);
-  useEffect(() => {     
-    if (localStorage.getItem('token') !== null) {
-      setIsAuth(true); 
-    }
-  }, [isAuth]);
+  // const [isAuth, setIsAuth] = useState(false);
+  // useEffect(() => {     
+  //   if (localStorage.getItem('token') !== null) {
+  //     setIsAuth(true); 
+  //   }
+  // }, [isAuth]);
 
   return (
     <Layout>
