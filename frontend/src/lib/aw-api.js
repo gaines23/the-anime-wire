@@ -94,7 +94,7 @@ export async function postUserSignups(info) {
             'Content-Type': 'application/json',
         }
     });
-console.log(info)
+
     const data = await response.json();
     
     if (!response.ok) {

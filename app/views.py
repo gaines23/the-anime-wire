@@ -27,6 +27,7 @@ from django.db.models import Q
 from django.core.exceptions import ValidationError
 from django.forms.models import model_to_dict
 from django.contrib.auth import get_user_model
+from rest_framework.permissions import AllowAny
 
 from .models import (
     ProfileSettings,
@@ -123,6 +124,8 @@ class UserChangePassword(APIView):
 
 
 class SignUps(APIView):
+    permission_classes = [AllowAny] 
+
     def post(self, request, *args, **kwargs):
         serializer = SignUpsSerializer(data=request.data)
         if serializer.is_valid():

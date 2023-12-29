@@ -10,7 +10,7 @@ const HomePage = () => {
 
         try {
             await postUserSignups({email: new_email});
-            alert("We Appreciate It. Chat Soon!");
+            alert("Thanks for the submission! Keep an eye out for new updates.");
         } catch (error) {
             console.log(error);
         }
