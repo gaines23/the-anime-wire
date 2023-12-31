@@ -54,7 +54,7 @@ const LoginForm = () => {
                 }
             }).then((data) => {   
                 authCtx.login(data.access, data.refresh, data.username, data.lastLogin);
-                navigate('/home/', { replace: true });
+                navigate('/home/logged_in/', { replace: true });
                 window.location.reload(false);
             })
             .catch((err) => {
@@ -125,8 +125,8 @@ const LoginForm = () => {
                             </div>
                             
                             <div className="w-full h-12 my-5 text-center">
-                                <Link to="/" className='w-full text-sm'>
-                                    Login Problems? Contact Support Here!
+                                <Link to="/register" className='w-full text-sm'>
+                                    Not a member? Create an account here!
                                 </Link>
                                 <br />
                                 <div>

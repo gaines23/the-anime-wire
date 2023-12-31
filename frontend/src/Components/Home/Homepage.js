@@ -1,6 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import { Fragment, useState } from "react";
 import { postUserSignups } from "../../lib/aw-api";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
     const [new_email, setEmail] = useState('');
@@ -84,7 +85,20 @@ const HomePage = () => {
                             </form>
                         </div>
                     </div>
+
+                    
                 </div>
+
+                <p className="w-full h-max float-right text-dark-purple">
+                    <Link 
+                        to="/login"
+                        className="h-full w-full"
+                    >
+                        <Button className="h-full w-full my-auto px-1 float-left rounded-l-lg">
+                            Login
+                        </Button>
+                    </Link>
+                </p>
             </div>
         </Fragment>
     );

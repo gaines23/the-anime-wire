@@ -3,3 +3,4 @@
 ./settings.py
 *venv-win/*
 *venv-prod/*
+*static_data/*

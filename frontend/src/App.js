@@ -8,18 +8,19 @@ import './App.css';
 
 const Home = React.lazy(() => import ('./Pages/Home'));
 const Login = React.lazy(() => import ('./Pages/Login'));
+const Register = React.lazy(() => import ('./Pages/Register'));
 
 const NotFound = React.lazy(() => import ('./Pages/NotFound'));
 
 
 function App() {
 
-  // const [isAuth, setIsAuth] = useState(false);
-  // useEffect(() => {     
-  //   if (localStorage.getItem('token') !== null) {
-  //     setIsAuth(true); 
-  //   }
-  // }, [isAuth]);
+  const [isAuth, setIsAuth] = useState(false);
+  useEffect(() => {     
+    if (localStorage.getItem('token') !== null) {
+      setIsAuth(true); 
+    }
+  }, [isAuth]);
 
   return (
     <Layout>
@@ -48,7 +49,14 @@ function App() {
           <Fragment>
               <Route path='/' element={<Navigate to='/home' />} />
               <Route path='/home' element={<Home />} />
-
+              <Route path='/login' element={<Login />} />
+              <Route path='/fahrenheit/user/register/' element={<Register />}/>
+              {isAuth && (
+                <>
+                  <Route path='/home/logged_in/' element={<Home />} />
+                
+                </>
+              )}
               <Route path='*' element={<NotFound />} />
             </Fragment>
         </Routes>
