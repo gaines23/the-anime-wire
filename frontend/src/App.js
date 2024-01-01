@@ -7,6 +7,7 @@ import LoadingSpinner from './Components/UI/LoadingSpinner';
 import './App.css';
 
 const Home = React.lazy(() => import ('./Pages/Home'));
+const UnderConstruction = React.lazy(() => import ('./Pages/UnderConstruction'))
 const Login = React.lazy(() => import ('./Pages/Login'));
 const Register = React.lazy(() => import ('./Pages/Register'));
 
@@ -35,22 +36,30 @@ function App() {
               <Route path='/login' element={<Login />} />
               <Route path='/' element={<Login />} />
             </Fragment>          
-          )}
-          
-          {isAuth && (
-            <Fragment>
-              <Route path='/' element={<Navigate to='/home' />} />
-              <Route path='/home' element={<Home />} />
-
-              <Route path='*' element={<NotFound />} />
-            </Fragment>
           )} */}
 
-          <Fragment>
+          {!isAuth && (
+            <Fragment>
               <Route path='/' element={<Navigate to='/home' />} />
-              <Route path='/home' element={<Home />} />
+              <Route path='/home' element={<UnderConstruction />} />
               <Route path='/login' element={<Login />} />
-              <Route path='/fahrenheit/user/register/' element={<Register />}/>
+              <Route path='/register' element={<Register />}/>
+            </Fragment>
+
+          )}
+
+          {isAuth && (
+            <Fragment>
+              <Route path='/' element={<Navigate to='/home/logged_in' />} />
+              <Route path='/home/logged_in' element={<Home />} />
+            </Fragment>
+          )}
+
+          {/* <Fragment>
+              <Route path='/' element={<Navigate to='/home' />} />
+              <Route path='/home' element={<UnderConstruction />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/register' element={<Register />}/>
               {isAuth && (
                 <>
                   <Route path='/home/logged_in/' element={<Home />} />
@@ -58,7 +67,9 @@ function App() {
                 </>
               )}
               <Route path='*' element={<NotFound />} />
-            </Fragment>
+            </Fragment> */}
+
+            <Route path='*' element={<NotFound />} />
         </Routes>
       </Suspense>
     </Layout>

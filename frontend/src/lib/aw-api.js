@@ -67,10 +67,10 @@ export async function getLogoutUrl() {
 }
 
 
-export async function getUserRegisteration(credentials) {
-    const response = await fetch(`${register_url}`, {
+export async function addUserRegistration(info) {
+    const response = await fetch(register_url, {
         method: 'POST',
-        body: JSON.stringify(credentials),
+        body: JSON.stringify(info),
         headers: {
             'Content-Type': 'application/json',
         }
@@ -82,8 +82,8 @@ export async function getUserRegisteration(credentials) {
         throw new Error(data.message || 'Login Credentials Rejected');
     }
 
-    return null;
-}
+    return data;
+} 
 
 
 export async function postUserSignups(email) {

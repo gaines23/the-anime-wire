@@ -5,3 +5,5 @@ const Register = () => {
         <RegisterForm />
     );
 }
+
+export default Register;

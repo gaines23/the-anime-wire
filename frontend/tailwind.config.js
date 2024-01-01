@@ -11,6 +11,7 @@ module.exports = {
           'bg-fill': '#FFFFFF',
           'dark-purple': '#160224',
           'text-purple': '#7843E6',
+          'bg-white': '#D9D9D9',
         },
         height: {
           '38': '10rem',

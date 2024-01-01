@@ -53,10 +53,21 @@ class UserCreate(APIView):
     def post(self, request, *args, **kwargs):
         serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            instance = serializer.save()
 
+            # Generate a new token pair
+            tokens_serializer = NewTokenObtainPairSerializer(data={"username": instance.username, "password": request.data["password1"]})
+            tokens_serializer.is_valid(raise_exception=True)
+            tokens = tokens_serializer.validated_data
+
+            response_data = {
+                "id": instance.id,
+                "access_token": tokens["access"],
+                "refresh_token": tokens["refresh"],
+            }
+            return Response(response_data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserLogout(APIView):
     permission_classes = [IsAuthenticated]

@@ -78,7 +78,7 @@ const LoginForm = () => {
             <div className="w-full h-full grid col-span-10 absolute">
                 <div className="h-103 w-auto self-center flex bg-form-bg-fill/20 rounded-lg shadow shadow-md m-auto sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/3 max-w-screen-xl">
                     <div className="h- w-full my-auto p-2">
-                        <p className="w-full fullh-12 mt-3 text-center font-bold text-3xl">
+                        <p className="w-full full h-12 mt-3 text-center font-bold text-3xl">
                             Login
                         </p>
 

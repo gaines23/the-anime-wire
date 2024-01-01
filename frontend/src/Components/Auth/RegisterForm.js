@@ -1,119 +1,158 @@
-import { Fragment, useRef } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { Fragment, useState } from "react";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 
 import LoadingSpinner from "../UI/LoadingSpinner";
+import { addUserRegistration } from "../../lib/aw-api";
+import UserOptions from "../Home/UserOptions";
+import { RegInput } from "../UI/FormStyles";
 
 
-const RegisterForm = (props) => {
-    const usernameRef = useRef();
-    const emailRef = useRef();
-    const passwordOneRef = useRef();
-    const passwordTwoRef = useRef();
+const RegisterForm = () => {
+    const navigate = useNavigate();
 
-    function submitRegisterForm(e) {
-        e.preventDefault();
+    const [getUsername, setUsername] = useState('');
+    const [getEmail, setEmail] = useState('');
+    const [getPass1, setPass1] = useState('');
+    const [getPass2, setPass2] = useState('');
 
-        const usernameInput = usernameRef.current.value;
-        const emailInput = emailRef.current.value;
-        const passwordOneInput = passwordOneRef.current.value;
-        const passwordTwoInput = passwordTwoRef.current.value;
+    const [openOptions, setOptions] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-        props.onRegisterUser(
-            { 
-                username: usernameInput,
-                email: emailInput,
-                password1: passwordOneInput,
-                password2: passwordTwoInput,
-            }
-        );
+    const handleUsername = (e) => {
+        setUsername(e.target.value);
     }
 
-    const inputClassName = "w-full h-9 mt-1 pl-5 shadow-md shadow-black/20 border-solid border border-input-fill/30 rounded-lg bg-input-fill/30 focus:border-input-fill hover:bg-input-fill/10 focus:text-sm focus:outline-none focus:bg-input-fill/10";
-    const sectionClassName = "h-16 w-4/5 m-auto text-xs my-1";
+    const handleEmail = (e) => {
+        setEmail(e.target.value);
+    }
+
+    const handlePass1 = (e) => {
+        setPass1(e.target.value);
+    }
+
+    const handlePass2 = (e) => {
+        setPass2(e.target.value);
+    }
+
+    const submitRegisterForm = async (e) => {
+        e.preventDefault();
+
+        setIsLoading(true);
+
+        const info = {
+            username: getUsername,
+            email: getEmail,
+            password1: getPass1,
+            password2: getPass2
+        }
+        
+        try {
+            const res = await addUserRegistration(info);
+            if (res.status === 201) {
+                const { id, access_token, refresh_token } = res.data;
+
+                localStorage.setItem('user_id', id);
+                localStorage.setItem('access_token', access_token);
+                localStorage.setItem('refresh_token', refresh_token);
+
+                navigate('/home/logged_in', { replace: true });
+                window.location.reload(false);
+            } else {
+                alert("Something went wrong! Try again");
+            }
+
+            setIsLoading(false);
+
+        } catch (error) {
+            console.log(error);
+            setIsLoading(false);
+        }
+    }
+
+    const sectionClassName = "h-full w-full inline-block py-2";
 
     return (
         <Fragment>
-            <div className="h-5/6 w-1/3 m-auto flex text-input-fill/60">
-                <div className="w-5/6 h-4/6 flex m-auto self-center bg-bg-fill/30 rounded-lg shadow shadow-md shadow-bg-fill/40">
-                    <div className="h-auto w-full my-auto p-2">
-                        <p className="w-full text-center font-bold text-3xl">Register</p>
+            <div className="h-full w-1/3 m-auto flex py-3">
+                <div className="w-5/6 h-5/6 block mx-auto">
+                    <p className="w-full text-center font-bold text-3xl">Register</p>
 
-                        <form className="h-auto w-full my-auto" onSubmit={submitRegisterForm}>
+                    <form className="h-fit w-fit my-auto inline-block" onSubmit={submitRegisterForm}>
                             
-                            {props.isLoading && (
-                                    <LoadingSpinner />
-                            )}
+                        {isLoading && (
+                            <LoadingSpinner />
+                        )}
 
-                            <div className={sectionClassName}>
-                                <label htmlFor='username' className="w-full">Username</label>
-                                <br />
-                                <input 
-                                    type='text' 
-                                    className={inputClassName} 
-                                    required
-                                    placeholder="username" 
-                                    ref={usernameRef}
-                                />
+                        <div className={sectionClassName}>
+                            <h1 className="py-1">Username</h1>
+                            <input 
+                                type='text' 
+                                className={RegInput} 
+                                required
+                                onChange={handleUsername}
+                                placeholder="username" 
+                            />
+                        </div>
+                        <div className={sectionClassName}>
+                            <h1 className="py-1">Email</h1>
+                            <input 
+                                type="email" 
+                                className={RegInput} 
+                                required
+                                placeholder="email" 
+                                onChange={handleEmail}
+                            />
+                        </div>
+                        <div className={sectionClassName}>
+                            <h1 className="py-1">Password</h1>
+                            <input
+                                type='password'
+                                className={RegInput} 
+                                required 
+                                placeholder="password" 
+                                onChange={handlePass1}
+                            />
+                        </div>
+                        <div className={sectionClassName}>
+                            <h1 className="py-1">Re-Type Password</h1>
+                            <input
+                                type='password'
+                                className={RegInput} 
+                                required 
+                                placeholder="password" 
+                                onChange={handlePass2}
+                            />
+                        </div>
+                        <div className="h-16 w-4/5 m-auto text-xs my-3">
+                            <div className="h-full w-5/6 mx-auto">                           
+                                <button 
+                                    type="submit" 
+                                    className="w-full text-sm h-10 shadow-md shadow-black/20 border-solid border border-text-white/30 rounded-lg hover:bg-text-white/20"
+                                    onClick={submitRegisterForm}
+                                >
+                                    Create Account
+                                </button>
                             </div>
-                            <div className={sectionClassName}>
-                                <label htmlFor='email' className="w-full">Email</label>
-                                <br />
-                                <input 
-                                    type='email' 
-                                    className={inputClassName} 
-                                    required
-                                    placeholder="email" 
-                                    ref={emailRef}
-                                />
-                            </div>
-                            <div className={sectionClassName}>
-                                <label htmlFor='password'>Password</label>
-                                <br />
-                                <input
-                                    type='password'
-                                    className={inputClassName} 
-                                    required 
-                                    placeholder="password" 
-                                    ref={passwordOneRef}    
-                                />
-                            </div>
-                            <div className={sectionClassName}>
-                                <label htmlFor='password'>Re-Type Password</label>
-                                <br />
-                                <input
-                                    type='password'
-                                    className={inputClassName} 
-                                    required 
-                                    placeholder="password" 
-                                    ref={passwordTwoRef}    
-                                />
-                            </div>
-                            <div className="h-16 w-4/5 m-auto text-xs my-3">
-                                <div className="h-full w-5/6 mx-auto">                           
-                                    <button type='submit' className="w-full text-sm h-10 shadow-md shadow-black/20 border-solid border border-input-fill/30 rounded-lg bg-input-fill/30 hover:bg-input-fill/10">
-                                        Create Account
-                                    </button>
-                                </div>
-                            </div>
+                        </div>
+
+                        {/* {openOptions && <UserOptions close={setOptions} />} */}
                             
-
-                            <div className="flex w-1/2 m-auto justify-self-center mt-5 h-5">
-                                <p className="w-16 h-3 float-left border-b-2 border-solid border-white/30"></p>
-                                <div className="w-6 m-auto float-left text-center border-solid border border-input-fill/40 rounded-md bg-input-fill/20">    
-                                    <p className="text-xs">Or</p>
-                                </div>
-                                <p className="w-16 h-3 float-left border-b-2 border-solid border-white/30"></p>
+                        <div className="flex w-1/2 m-auto justify-self-center mt-5 h-5">
+                            <p className="w-16 h-3 float-left border-b-2 border-solid border-white/30"></p>
+                            <div className="w-6 m-auto float-left text-center border-solid border border-input-fill/40 rounded-md bg-input-fill/20">    
+                                <p className="text-xs">Or</p>
                             </div>
+                            <p className="w-16 h-3 float-left border-b-2 border-solid border-white/30"></p>
+                        </div>
 
-                            <div className="w-full h-12 mt-5 text-center">
-                                <NavLink to="/fahrenheit/user/login/" className='w-full text-xs'>
-                                    Aleady have an account?
-                                </NavLink>
-                                <br />
-                                <Link to="" className='w-full italic text-xs'>Forgot password?</Link>
-                            </div>
-                        </form>
-                    </div>
+                        <div className="w-full h-12 mt-5 text-center">
+                            <NavLink to="/user/login" className='w-full text-xs'>
+                                Aleady have an account?
+                            </NavLink>
+                            <br />
+                            <Link to="" className='w-full italic text-xs'>Forgot password?</Link>
+                        </div>
+                    </form>
                 </div>
             </div>
         </Fragment>
