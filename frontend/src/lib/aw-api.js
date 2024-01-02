@@ -5,6 +5,7 @@ import {
     update_password,
     auto_update_password,
     user_signups,
+    anime_cats,
     
 } from './constants';
 
@@ -102,4 +103,25 @@ export async function postUserSignups(email) {
     }
 
     return null;
+}
+
+
+
+// HOME PAGE //
+export async function getAnimeCats() {
+    const response = await fetch(anime_cats, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user_token}`
+        }
+    });
+
+    const soap = await response.json();
+
+    if (!response.ok) {
+        throw new Error(response.status_message);
+    }
+
+    return soap;
 }

@@ -12,6 +12,7 @@ module.exports = {
           'dark-purple': '#160224',
           'text-purple': '#7843E6',
           'bg-white': '#D9D9D9',
+          'form-purple': '#400080'
         },
         height: {
           '38': '10rem',

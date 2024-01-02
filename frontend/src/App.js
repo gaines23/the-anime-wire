@@ -31,13 +31,6 @@ function App() {
         }
       >
         <Routes>
-          {/* {!isAuth && (
-            <Fragment>
-              <Route path='/login' element={<Login />} />
-              <Route path='/' element={<Login />} />
-            </Fragment>          
-          )} */}
-
           {!isAuth && (
             <Fragment>
               <Route path='/' element={<Navigate to='/home' />} />
@@ -54,20 +47,6 @@ function App() {
               <Route path='/home/logged_in' element={<Home />} />
             </Fragment>
           )}
-
-          {/* <Fragment>
-              <Route path='/' element={<Navigate to='/home' />} />
-              <Route path='/home' element={<UnderConstruction />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/register' element={<Register />}/>
-              {isAuth && (
-                <>
-                  <Route path='/home/logged_in/' element={<Home />} />
-                
-                </>
-              )}
-              <Route path='*' element={<NotFound />} />
-            </Fragment> */}
 
             <Route path='*' element={<NotFound />} />
         </Routes>

@@ -1,19 +1,41 @@
 import { Fragment, useEffect, useState } from "react";
 import LoadingSpinner from "../UI/LoadingSpinner";
+import { Box, Card, CardContent, Typography } from "@mui/material";
+import { getAnimeCats } from "../../lib/aw-api";
+import useHttp from "../../hooks/use-http";
+import CloseIcon from '@mui/icons-material/Close';
+import { CheckBox } from "@mui/icons-material";
 
-const UserOptions = () => {
-    // const { sendRequest, status, error } = useHttp(postEcProfile, true);
 
-    // const [getServices, setServiceList] = useState([]);
-    
-    // useEffect(() => {
-    //     if(status === 'completed' && !error) {
-    //         setIsOpen(false);
-    //         localStorage.getItem('newFollower', false);
-    //     };
-    // }, [status, error, setIsOpen]);
-
+const UserOptions = ({handleClose}) => {
+    const [getCats, setCats] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [expandedIds, setExpandedIds] = useState([]);
+
+    const { sendRequest, status, error, data } = useHttp(getAnimeCats, true);
+   
+    useEffect(() => {
+        if (localStorage.getItem('new_auth')) {
+            sendRequest();
+        }
+    }, [sendRequest]);
+
+    useEffect(() => {
+        if (data) {
+            setCats(data);
+        }
+    }, [setCats, data]);
+
+    console.log(getCats)
+
+    const toggleExpand = (id) => {
+        if (expandedIds.includes(id)) {
+            setExpandedIds(expandedIds.filter((itemId) => itemId !== id));
+        } else {
+            setExpandedIds([...expandedIds, id]);
+        }
+    };
+
 
     // const submitProfile = (e) => {
     //     e.preventDefault();
@@ -29,42 +51,107 @@ const UserOptions = () => {
 
     return (
         <Fragment>
-            <div id="modalWrapper" className="text-input-fill flex h-5/6 sm:w-96 md:w-[32rem] mx-auto z-50 justify-center items-center overflow-hidden outline-none focus:outline-none">
-                <div className="relative h-5/6 w-4/5 m-auto border-0 rounded-lg shadow-lg bg-gradient-to-br from-ec-purple to-ec-orange rounded-lg bg-white outline-none focus:outline-none">
-                    <div className="h-1/6 flex items-start justify-center text-left px-5 py-2 border-b border-solid border-slate-200 rounded-t">
-                        <h3 className="w-full text-xl font-semibold text-input-fill">
-                            Select your streaming services for the best experience
-                        </h3>
+            <Box className="w-auto h-5/6 inline-grid border p-1 border-solid border-2 border-bg-white/40 fixed overflow-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-2xl bg-form-purple text-text-white rounded-lg">
+                <div className="w-full h-full m-auto px-1">
+                    <div className="w-max h-max my-auto float-left flex mt-3 mb-5 p-1">
+                        <h2 className="text-xl font-extrabold w-max px-1">
+                            For the best experience, tell us about yourself 
+                        </h2>
                     </div>
-
-                    <div className="h-2/3 w-full grid p-5 overflow-x-hidden">
-                        {isLoading && <LoadingSpinner />}
-                        <ul className="w-11/12 h-full mx-auto grid-flow-colitems-center justify-center auto-cols-max grid-rows-auto my-4">
-                            {/* <StreamingServiceButton setServiceList={setServiceList} /> */}
-                        </ul>
-                    </div>
-
-                    <div className="h-1/6 flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                        {/* <button
-                            className="w-28 h-7 text-input-fill background-transparent font-bold lowercase text-sm outline-none focus:outline-none hover:bg-input-fill/10 rounded-lg mr-1 mb-1"
-                            type="button"
-                           // onClick={() => setIsOpen(false)}
-                        >
-                            {newFollower ? 'Skip' : 'Close'}
-                        </button> */}
-                        <button
-                            className='w-28 text-xs h-7 shadow-sm shadow-black/20 font-bold border-solid uppercase border border-input-fill/30 rounded-lg bg-input-fill/30 hover:bg-input-fill/10'
-                            type="submit"
-                           // onClick={submitProfile}
-                        >
-                            Save
-                        </button>
+                    <div className="w-max h-max my-auto float-right flex mt-1 mb-5 p-1">
+                        <CloseIcon 
+                            className="w-6 h-6 float-right cursor-pointer m-auto hover:bg-bg-white hover:text-text-purple rounded-2xl"
+                            onClick={handleClose} 
+                        />
                     </div>
                 </div>
-            </div>
+                
+                <form className="p-2 rounded-md">
+                    <div className="w-full h-auto flex">
+                        <div className="w-full h-max grid grid-cols-1 grid-rows-auto pb-3">
+                            
+                            <div className="w-full h-max grid grid-rows-1 gap-2 row-span-3">
+                                <h3 className="w-full text-lg font-semibold">
+                                    What anime categories do you watch/follow?
+                                </h3>
 
-            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                                <div className="grid grid-cols-3 grid-rows-2 gap-4">
+                                    {getCats.map((item) => (
+                                        <div key={item.id} className="col-span-1 row-span-1">
+                                            <Card 
+                                                className="w-full h-full" 
+                                                sx={{
+                                                    backdropFilter: 'blur(8px)',
+                                                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                                    borderRadius: '8px',
+                                                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                                                    overflow: 'hidden',
+                                                    transition: 'background-color 0.3s ease',
+                                                    '&:hover': {
+                                                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                                    },
+                                                    color: '#F7F8FD'
+                                                }}
+                                            >
+                                                <CardContent>
+                                                    <div className="w-full h-max inline-block border-b border-b-white">
+                                                        <div className="w-max float-left">
+                                                            <Typography className="text-lg text-bold w-max" gutterBottom>{item.category}</Typography>
+                                                        </div>
+                                                        <div className="float-right w-max">
+                                                            <CheckBox />
+                                                        </div>
+                                                    </div>
 
+                                                    {expandedIds.includes(item.id) ? (
+                                                        <>
+                                                            <Typography>{item.description}</Typography>
+                                                            <span onClick={() => toggleExpand(item.id)} className="text-light-grey cursor-pointer">
+                                                                {' '}
+                                                                Hide
+                                                            </span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <Typography>
+                                                                {item.description.split(' ').slice(0, 20).join(' ')}
+                                                                {item.description.split(' ').length > 20 && (
+                                                                <span onClick={() => toggleExpand(item.id)} className="text-light-grey cursor-pointer">
+                                                                    {' '}
+                                                                    ...more
+                                                                </span>
+                                                                )}
+                                                            </Typography>
+                                                        {/* {expandedIds.includes(item.id) || (
+                                                            <span onClick={() => toggleExpand(item.id)} className="text-blue-500 cursor-pointer">
+                                                            {' '}
+                                                            Expand
+                                                            </span>
+                                                        )} */}
+                                                        </>
+                                                    )}
+                                                </CardContent>
+                                            </Card>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="w-full h-max grid grid-rows-1 gap-2 row-span-3">
+                                <h3 className="w-full text-lg font-semibold text-input-fill">
+                                    What anime genres do you enjoy the most?
+                                </h3>
+                            </div>
+
+                            <div className="w-full h-max grid grid-rows-1 gap-2 row-span-3">
+                                <h3 className="w-full text-lg font-semibold text-input-fill">
+                                    Lastly, what streaming services do you use to watch anime?
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </Box>
         </Fragment>
     );
 };

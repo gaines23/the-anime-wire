@@ -1,11 +1,13 @@
-import { Fragment, useState } from "react";
+import { Fragment, useContext, useRef, useState } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 
 import LoadingSpinner from "../UI/LoadingSpinner";
 import { addUserRegistration } from "../../lib/aw-api";
 import UserOptions from "../Home/UserOptions";
 import { RegInput } from "../UI/FormStyles";
+import AuthContext from "../../store/auth-context";
 
+let login_url = process.env.REACT_APP_LOGIN;
 
 const RegisterForm = () => {
     const navigate = useNavigate();
@@ -17,6 +19,8 @@ const RegisterForm = () => {
 
     const [openOptions, setOptions] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    const authCtx = useContext(AuthContext);
 
     const handleUsername = (e) => {
         setUsername(e.target.value);
@@ -47,24 +51,35 @@ const RegisterForm = () => {
         }
         
         try {
-            const res = await addUserRegistration(info);
-            if (res.status === 201) {
-                const { id, access_token, refresh_token } = res.data;
+            const regResponse = await addUserRegistration(info);
 
-                localStorage.setItem('user_id', id);
-                localStorage.setItem('access_token', access_token);
-                localStorage.setItem('refresh_token', refresh_token);
-
-                navigate('/home/logged_in', { replace: true });
-                window.location.reload(false);
+            if (regResponse.id !== '') {
+                const loginResponse = await fetch(login_url, {
+                    method: 'POST',
+                    body: JSON.stringify({ username: info.username, password: info.password1 }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+    
+                setIsLoading(false);
+    
+                if (loginResponse.ok) {
+                    const data = await loginResponse.json();
+                    authCtx.login(data.access, data.refresh, data.username, data.lastLogin);
+                    localStorage.setItem("new_auth", true);
+                    navigate('/home/logged_in');
+                    window.location.reload(true);
+                } else {
+                    alert("Login failed. Please try again.");
+                }
             } else {
                 alert("Something went wrong! Try again");
             }
-
+    
             setIsLoading(false);
-
         } catch (error) {
-            console.log(error);
+            console.error(error);
             setIsLoading(false);
         }
     }
@@ -146,7 +161,7 @@ const RegisterForm = () => {
                         </div>
 
                         <div className="w-full h-12 mt-5 text-center">
-                            <NavLink to="/user/login" className='w-full text-xs'>
+                            <NavLink to="/login" className='w-full text-xs'>
                                 Aleady have an account?
                             </NavLink>
                             <br />

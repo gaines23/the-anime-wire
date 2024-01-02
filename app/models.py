@@ -18,8 +18,9 @@ class AnimeCategories(models.Model):
     id = models.IntegerField(primary_key=True)
     category = models.CharField(max_length=255)
     description = models.TextField()
+    examples = models.TextField()
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.category
     
     class Meta:

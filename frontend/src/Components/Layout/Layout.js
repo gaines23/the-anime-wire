@@ -56,7 +56,7 @@ const Layout = (props) => {
                         }
                     </div> */}
                  
-                    <div className="w-full h-screen sticky z-100 grid grid-flow-col rounded-l-xl bg-clip-padding backdrop-filter shadow shadow-lg shadow-navy/80 border-navy/30">
+                    <div className="w-full h-screen sticky z-100 grid grid-flow-col">
                         <main className="h-screen w-full mx-auto rounded-l-md grid auto-rows-max grid-flow-col grid-cols-12">
                             <Box className="w-full h-screen flex flex-col col-span-full px-3">
                                 {props.children}

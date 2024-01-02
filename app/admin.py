@@ -3,7 +3,8 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import AdminSite
 
 from app.models import (
-    ProfileSettings
+    ProfileSettings,
+    AnimeCategories
 )
 
 
@@ -14,3 +15,9 @@ class AwUserAdmin(admin.ModelAdmin):
     search_fields = ['username', 'email', 'first_name', 'last_name']
     ordering = ['date_joined']
 admin.site.register(ProfileSettings, AwUserAdmin)
+
+class AnimeCategoriesAdmin(admin.ModelAdmin):
+    list_display = ['category', 'id', 'description']
+    readonly_fields = ['id']
+    model = AnimeCategories
+admin.site.register(AnimeCategories, AnimeCategoriesAdmin)

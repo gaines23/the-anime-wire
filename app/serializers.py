@@ -8,6 +8,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import (
     ProfileSettings,
     UserSignUps,
+    AnimeCategories,
 )
         
 class NewTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -65,3 +66,10 @@ class SignUpsSerializer(serializers.ModelSerializer):
         validated_data['sign_up_date'] = datetime.now()
         instance = UserSignUps.objects.create(**validated_data)
         return instance
+    
+
+
+class AnimeCategoriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AnimeCategories
+        fields = '__all__'

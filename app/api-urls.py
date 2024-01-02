@@ -7,6 +7,7 @@ from app.views import (
     UserChangePassword,
     UserAutoChangePassword,
     SignUps,
+    AnimeCategoriesList,
 )
 
 from rest_framework_simplejwt.views import (
@@ -23,4 +24,6 @@ urlpatterns = [
     path('auto-update-password/', UserAutoChangePassword.as_view(), name='auto_password'),
  
     path('new-user/signups/', SignUps.as_view(), name='user_signups'),
+
+    path('anime-categories/', AnimeCategoriesList.as_view(), name='categories'),
 ]
