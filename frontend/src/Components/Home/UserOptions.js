@@ -6,7 +6,6 @@ import useHttp from "../../hooks/use-http";
 import CloseIcon from '@mui/icons-material/Close';
 import { CheckBox } from "@mui/icons-material";
 
-
 const UserOptions = ({handleClose}) => {
     const [getCats, setCats] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -23,10 +22,9 @@ const UserOptions = ({handleClose}) => {
     useEffect(() => {
         if (data) {
             setCats(data);
+            
         }
     }, [setCats, data]);
-
-    console.log(getCats)
 
     const toggleExpand = (id) => {
         if (expandedIds.includes(id)) {
@@ -51,7 +49,7 @@ const UserOptions = ({handleClose}) => {
 
     return (
         <Fragment>
-            <Box className="w-auto h-5/6 inline-grid border p-1 border-solid border-2 border-bg-white/40 fixed overflow-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-2xl bg-form-purple text-text-white rounded-lg">
+            <Box className="w-2/3 h-5/6 inline-grid border p-1 border-solid border-2 border-aw-teal fixed overflow-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-2xl bg-form-purple text-text-white rounded-lg">
                 <div className="w-full h-full m-auto px-1">
                     <div className="w-max h-max my-auto float-left flex mt-3 mb-5 p-1">
                         <h2 className="text-xl font-extrabold w-max px-1">
@@ -90,10 +88,10 @@ const UserOptions = ({handleClose}) => {
                                                     '&:hover': {
                                                         backgroundColor: 'rgba(255, 255, 255, 0.2)',
                                                     },
-                                                    color: '#F7F8FD'
+                                                    color: '#F7F8FD',
                                                 }}
                                             >
-                                                <CardContent>
+                                                <CardContent sx={{padding: '4px'}}>
                                                     <div className="w-full h-max inline-block border-b border-b-white">
                                                         <div className="w-max float-left">
                                                             <Typography className="text-lg text-bold w-max" gutterBottom>{item.category}</Typography>
@@ -103,9 +101,28 @@ const UserOptions = ({handleClose}) => {
                                                         </div>
                                                     </div>
 
+                                                    <div 
+                                                        style={{ 
+                                                            display: 'flex', 
+                                                            justifyContent: 'space-between', 
+                                                            position: 'relative',
+                                                            marginBottom: '6px'
+                                                        }}
+                                                    >
+                                                        {item.examples.split(',').map((id) => id.trim()).map((id) => (
+                                                            <img
+                                                            key={id}
+                                                            src={require(`./images/${id}.jpg`)}
+                                                            alt={`${id}`}
+                                                            style={{ width: '32%', height: 'auto', borderRadius: '8px', position: 'relative', zIndex: 1 }}
+                                                            className="rounded-md shadow-md transition-shadow shadow-aw-teal/50"
+                                                            />
+                                                        ))}
+                                                    </div>
+
                                                     {expandedIds.includes(item.id) ? (
                                                         <>
-                                                            <Typography>{item.description}</Typography>
+                                                            <Typography className="text-left p-1 text-sm">{item.description}</Typography>
                                                             <span onClick={() => toggleExpand(item.id)} className="text-light-grey cursor-pointer">
                                                                 {' '}
                                                                 Hide
@@ -113,7 +130,7 @@ const UserOptions = ({handleClose}) => {
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <Typography>
+                                                            <Typography className="text-left p-1 text-sm">
                                                                 {item.description.split(' ').slice(0, 20).join(' ')}
                                                                 {item.description.split(' ').length > 20 && (
                                                                 <span onClick={() => toggleExpand(item.id)} className="text-light-grey cursor-pointer">
@@ -122,12 +139,6 @@ const UserOptions = ({handleClose}) => {
                                                                 </span>
                                                                 )}
                                                             </Typography>
-                                                        {/* {expandedIds.includes(item.id) || (
-                                                            <span onClick={() => toggleExpand(item.id)} className="text-blue-500 cursor-pointer">
-                                                            {' '}
-                                                            Expand
-                                                            </span>
-                                                        )} */}
                                                         </>
                                                     )}
                                                 </CardContent>
