@@ -5,20 +5,15 @@
 body {
   margin: 0;
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Nunito', 'Kulim Park';
-  background-color: #150222;
-  color: #BABABA;
-  border-radius: 10px;  
-  /* font-family:  'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif; */
+  font-family: -apple-system, BlinkMacSystemFont, 'Nunito', 'Kulim Park', 'Segoe UI', 'Roboto', sans-serif;
+  background-color: rgba(21, 2, 34, 1);
+  color: #bababa;
+  border-radius: 10px;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
-
 
 .no-spinners::-webkit-inner-spin-button,
 .no-spinners::-webkit-outer-spin-button {
-  -webkit-appearance: none; /* Hide spinners for WebKit browsers (e.g., Chrome, Safari) */
-  appearance: none; /* Hide spinners for other browsers */
+  -webkit-appearance: none;
+  appearance: none;
 }

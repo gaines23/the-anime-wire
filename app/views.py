@@ -31,13 +31,16 @@ from rest_framework.permissions import AllowAny
 
 from .models import (
     ProfileSettings,
-    UserSignUps
+    UserSignUps,
+    AnimeCategories
 )
 from .serializers import (
     NewTokenObtainPairSerializer
     , UserCreateSerializer
     , UserUpdatePassword
     , SignUpsSerializer
+    , AnimeCategoriesSerializer
+    , NewUserSelectSerializer
 )
 
 
@@ -50,13 +53,15 @@ class NewTokenObtainPairView(TokenObtainPairView):
 
 
 class UserCreate(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request, *args, **kwargs):
         serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    
 
 class UserLogout(APIView):
     permission_classes = [IsAuthenticated]
@@ -132,3 +137,15 @@ class SignUps(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class AnimeCategoriesList(APIView):
+    def get(self, request, *args, **kwargs):
+        cats = AnimeCategories.objects.all()
+        serializer = AnimeCategoriesSerializer(cats, many=True).data
+        return Response(serializer, status=status.HTTP_200_OK)
+    
+# class NewUserSelections(APIView):
+#     def post(self, request, *args, **kwargs):
+#         user = request.user.id
+        

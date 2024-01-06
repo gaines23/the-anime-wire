@@ -4,6 +4,7 @@ import { Fragment, useRef, useState, useContext } from "react";
 import AuthContext from "../../store/auth-context";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import UpdatePasswordModal from "../Modals/UpdatePasswordModal";
+import { RegInput } from "../UI/FormStyles";
 
 let login_url = process.env.REACT_APP_LOGIN;
 
@@ -54,8 +55,8 @@ const LoginForm = () => {
                 }
             }).then((data) => {   
                 authCtx.login(data.access, data.refresh, data.username, data.lastLogin);
-                navigate('/home/', { replace: true });
-                window.location.reload(false);
+                navigate('/home/logged_in');
+                window.location.reload(true);
             })
             .catch((err) => {
                 alert(err.message);
@@ -70,38 +71,32 @@ const LoginForm = () => {
         setIsUpdatePasswordModalOpen(false);
     };
 
-    const inputClassName = "w-full h-9 mt-1 pl-5 shadow-md shadow-black/20 text-black border-solid border border-text-white/30 color-black rounded-lg";
-    const sectionClassName = "h-16 w-4/5 m-auto text-xs my-5";
+    const sectionClassName = "h-full w-full inline-block py-2";
 
     return (
         <Fragment>
-            <div className="w-full h-full grid col-span-10 absolute">
-                <div className="h-103 w-auto self-center flex bg-form-bg-fill/20 rounded-lg shadow shadow-md m-auto sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/3 max-w-screen-xl">
-                    <div className="h- w-full my-auto p-2">
-                        <p className="w-full fullh-12 mt-3 text-center font-bold text-3xl">
-                            Login
-                        </p>
+            <div className="h-full w-1/3 m-auto flex py-3">
+                <div className="w-5/6 h-ft block m-auto">
+                    <p className="w-full text-center font-bold text-3xl">Login</p>
 
-                        <form className="h-auto w-full my-auto" onSubmit={submitHandler}>
+                    <form className="h-fit w-fit my-auto inline-block" onSubmit={submitHandler}>
                             { isLoading && <LoadingSpinner /> }
 
                             <div className={sectionClassName}>
-                                <label htmlFor='username' className="w-full">Username</label>
-                                <br />
-                                <input 
+                                <h1 className="py-1">Username</h1>
+                               <input 
                                     type='text' 
-                                    className={inputClassName} 
+                                    className={RegInput} 
                                     required
                                     placeholder="username" 
                                     ref={usernameRef}
                                 />
                             </div>
                             <div className={sectionClassName}>
-                                <label htmlFor='password'>Password</label>
-                                <br />
+                                <h1 className="py-1">Password</h1>
                                 <input
                                     type='password'
-                                    className={inputClassName} 
+                                    className={RegInput} 
                                     required 
                                     placeholder="password" 
                                     ref={passwordRef}    
@@ -125,8 +120,8 @@ const LoginForm = () => {
                             </div>
                             
                             <div className="w-full h-12 my-5 text-center">
-                                <Link to="/" className='w-full text-sm'>
-                                    Login Problems? Contact Support Here!
+                                <Link to="/register" className='w-full text-sm'>
+                                    Not a member? Create an account here!
                                 </Link>
                                 <br />
                                 <div>
@@ -140,7 +135,6 @@ const LoginForm = () => {
                         </form>
                     </div>
                 </div>
-            </div>
         </Fragment>
     );
 };

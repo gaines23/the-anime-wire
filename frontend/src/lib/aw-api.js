@@ -5,6 +5,7 @@ import {
     update_password,
     auto_update_password,
     user_signups,
+    anime_cats,
     
 } from './constants';
 
@@ -67,10 +68,10 @@ export async function getLogoutUrl() {
 }
 
 
-export async function getUserRegisteration(credentials) {
-    const response = await fetch(`${register_url}`, {
+export async function addUserRegistration(info) {
+    const response = await fetch(register_url, {
         method: 'POST',
-        body: JSON.stringify(credentials),
+        body: JSON.stringify(info),
         headers: {
             'Content-Type': 'application/json',
         }
@@ -82,8 +83,8 @@ export async function getUserRegisteration(credentials) {
         throw new Error(data.message || 'Login Credentials Rejected');
     }
 
-    return null;
-}
+    return data;
+} 
 
 
 export async function postUserSignups(email) {
@@ -102,4 +103,25 @@ export async function postUserSignups(email) {
     }
 
     return null;
+}
+
+
+
+// HOME PAGE //
+export async function getAnimeCats() {
+    const response = await fetch(anime_cats, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user_token}`
+        }
+    });
+
+    const soap = await response.json();
+
+    if (!response.ok) {
+        throw new Error(response.status_message);
+    }
+
+    return soap;
 }

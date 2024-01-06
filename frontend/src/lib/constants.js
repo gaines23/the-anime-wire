@@ -9,6 +9,8 @@ let auto_update_password = process.env.REACT_APP_AUTO_UPDATE_PASSWORD;
 
 let user_signups = process.env.REACT_APP_USER_SIGNUPS;
 
+let anime_cats = process.env.REACT_APP_CATEGORIES;
+
 export {
     login_url,
     user_token,
@@ -17,4 +19,5 @@ export {
     update_password,
     auto_update_password,
     user_signups,
+    anime_cats,
 }

@@ -1,8 +1,11 @@
 import HomePage from "../Components/Home/Homepage";
+import { PageSection_Main } from "../Components/UI/FormStyles";
 
 const Home = () => {
     return (
-        <HomePage />
+        <div className="flex w-full mx-auto">
+            <HomePage />
+        </div>
     ); 
 }
 
