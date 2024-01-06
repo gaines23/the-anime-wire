@@ -37,7 +37,7 @@ class AnimeGenres(models.Model):
     class Meta:
         db_table = 'anime_genres'
         verbose_name_plural = 'Anime Genres'
-
+        ordering = ['genre']
 
 class StreamingServices(models.Model):
     id = models.BigAutoField(primary_key=True)

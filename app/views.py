@@ -32,7 +32,9 @@ from rest_framework.permissions import AllowAny
 from .models import (
     ProfileSettings,
     UserSignUps,
-    AnimeCategories
+    AnimeCategories,
+    StreamingServices,
+    AnimeGenres,
 )
 from .serializers import (
     NewTokenObtainPairSerializer
@@ -41,6 +43,8 @@ from .serializers import (
     , SignUpsSerializer
     , AnimeCategoriesSerializer
     , NewUserSelectSerializer
+    , StreamingServicesSerializer
+    , GenreSerlializer
 )
 
 
@@ -145,6 +149,21 @@ class AnimeCategoriesList(APIView):
         serializer = AnimeCategoriesSerializer(cats, many=True).data
         return Response(serializer, status=status.HTTP_200_OK)
     
+
+class StreamingList(APIView):
+    ### GET ###
+    def get(self, request, *args, **kwargs):
+        services = StreamingServices.objects.all()
+        serializer = StreamingServicesSerializer(services, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class AllGenreList(APIView):
+    def get(self, request, *args, **kwargs):
+        services = AnimeGenres.objects.all()
+        serializer = GenreSerlializer(services, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 # class NewUserSelections(APIView):
 #     def post(self, request, *args, **kwargs):
 #         user = request.user.id

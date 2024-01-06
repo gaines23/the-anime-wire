@@ -4,7 +4,8 @@ from django.contrib.admin import AdminSite
 
 from app.models import (
     ProfileSettings,
-    AnimeCategories
+    AnimeCategories,
+    StreamingServices
 )
 
 
@@ -21,3 +22,7 @@ class AnimeCategoriesAdmin(admin.ModelAdmin):
     readonly_fields = ['id']
     model = AnimeCategories
 admin.site.register(AnimeCategories, AnimeCategoriesAdmin)
+
+class StreamingListAdmin(admin.ModelAdmin):
+    model = StreamingServices
+admin.site.register(StreamingServices, StreamingListAdmin)

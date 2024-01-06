@@ -10,6 +10,8 @@ let auto_update_password = process.env.REACT_APP_AUTO_UPDATE_PASSWORD;
 let user_signups = process.env.REACT_APP_USER_SIGNUPS;
 
 let anime_cats = process.env.REACT_APP_CATEGORIES;
+let anime_genres = process.env.REACT_APP_GENRES;
+let streaming_services = process.env.REACT_APP_STREAMING_SERVICES;
 
 export {
     login_url,
@@ -20,4 +22,6 @@ export {
     auto_update_password,
     user_signups,
     anime_cats,
+    anime_genres,
+    streaming_services,
 }

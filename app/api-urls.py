@@ -8,6 +8,8 @@ from app.views import (
     UserAutoChangePassword,
     SignUps,
     AnimeCategoriesList,
+    StreamingList,
+    AllGenreList,
 )
 
 from rest_framework_simplejwt.views import (
@@ -26,4 +28,7 @@ urlpatterns = [
     path('new-user/signups/', SignUps.as_view(), name='user_signups'),
 
     path('anime-categories/', AnimeCategoriesList.as_view(), name='categories'),
+    path('anime-genres/', AllGenreList.as_view(), name='genres'),
+    path('streaming_services/', StreamingList.as_view(), name='streaming_services'),
+
 ]

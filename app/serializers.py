@@ -9,6 +9,8 @@ from .models import (
     ProfileSettings,
     UserSignUps,
     AnimeCategories,
+    AnimeGenres,
+    StreamingServices,
 )
         
 class NewTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -73,6 +75,18 @@ class AnimeCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnimeCategories
         fields = '__all__'
+
+class StreamingServicesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StreamingServices
+        fields = '__all__'
+
+class GenreSerlializer(serializers.ModelSerializer):
+    class Meta:
+        model = AnimeGenres
+        fields = '__all__'
+
+
 
 class NewUserSelectSerializer(serializers.ModelSerializer):
     class Meta:

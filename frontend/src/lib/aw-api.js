@@ -6,6 +6,8 @@ import {
     auto_update_password,
     user_signups,
     anime_cats,
+    anime_genres,
+    streaming_services,
     
 } from './constants';
 
@@ -117,11 +119,48 @@ export async function getAnimeCats() {
         }
     });
 
-    const soap = await response.json();
+    const data = await response.json();
 
     if (!response.ok) {
         throw new Error(response.status_message);
     }
 
-    return soap;
+    return data;
 }
+
+export async function getStreamingList() {
+    const response = await fetch(streaming_services, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user_token}`
+        }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(response.status_message);
+    }
+
+    return data;
+}
+
+export async function getGenresList() {
+    const response = await fetch(anime_genres, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user_token}`
+        }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(response.status_message);
+    }
+
+    return data;
+}
+  
