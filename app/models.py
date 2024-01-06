@@ -51,7 +51,7 @@ class StreamingServices(models.Model):
     
     class Meta:
         db_table = 'streaming_services'
-
+        ordering = ['streaming_name']
 
 class BaseModel(models.Model):
     """Base model for the application. Uses UUID for pk."""

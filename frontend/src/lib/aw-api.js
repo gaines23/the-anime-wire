@@ -8,6 +8,7 @@ import {
     anime_cats,
     anime_genres,
     streaming_services,
+    new_user_registered
     
 } from './constants';
 
@@ -164,3 +165,21 @@ export async function getGenresList() {
     return data;
 }
   
+export async function postNewUserRegs({info}) {
+    const response = await fetch(new_user_registered, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user_token}`
+        },
+        body: JSON.stringify(info),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(response.status_message);
+    }
+
+    return data;
+}

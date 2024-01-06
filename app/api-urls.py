@@ -10,6 +10,7 @@ from app.views import (
     AnimeCategoriesList,
     StreamingList,
     AllGenreList,
+    NewUserSelections,
 )
 
 from rest_framework_simplejwt.views import (
@@ -31,4 +32,5 @@ urlpatterns = [
     path('anime-genres/', AllGenreList.as_view(), name='genres'),
     path('streaming_services/', StreamingList.as_view(), name='streaming_services'),
 
+    path('new-user/registered/selections/', NewUserSelections.as_view(), name='reg_selections'),
 ]

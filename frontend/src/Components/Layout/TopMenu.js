@@ -28,33 +28,26 @@ const TopMenu = () => {
 
     return (
         <Fragment>
-            <Box 
-                sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    width: "100%",
-                }}
-            >
+            <Box>
                 <div className="w-full h-max flex">
-                    {/* <div className="w-full h-full col-span-1 mb-auto flex">
+                    <div className="w-full h-full col-span-1 flex">
                         <div className="w-max h-max flex px-2 m-auto">
-                            {/* <Typography sx={{ minWidth: 100 }}>Contact</Typography>
-                            <Typography sx={{ minWidth: 100 }}>Profile</Typography>
+                            {/* {/* <Typography sx={{ minWidth: 100 }}>Contact</Typography>
+                            <Typography sx={{ minWidth: 100 }}>Profile</Typography> */}
                         </div>
-                    </div> */}
+                    </div>
                     
-                    <div className="w-full h-fit flex">
+                    <div className="w-full h-fit flex col-span-1">
                         <div className="w-max h-full mx-auto">
                             <img 
                                 src={NewAW}
-                                className="w-auto h-auto m-auto"
+                                className="w-auto h-24 m-auto"
                             />
                         </div>
                     </div>
 
-                    {/* <div className="w-full flex col-span-1 px-2 h-full">
-                        <div className="w-max mx-auto my-auto">
+                    <div className="w-full flex col-span-1 h-fit">
+                        <div className="w-max h-max ml-auto my-auto px-5">
                             <IconButton
                                 onClick={handleClick}
                                 size="small"
@@ -63,16 +56,15 @@ const TopMenu = () => {
                                 aria-haspopup="true"
                                 aria-expanded={anchorEl ? "true" : undefined}
                             >
-                                <Avatar sx={{ width: 32, height: 32 }}>A</Avatar>
+                                <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
                             </IconButton>
                         </div>
-                    </div> */}
+                    </div>
                 </div>
             </Box>
 
-            {/* <Menu
+            <Menu
                 anchorEl={anchorEl}
-                id="account-menu"
                 open={open}
                 onClose={handleClose}
                 onClick={handleClose}
@@ -108,29 +100,23 @@ const TopMenu = () => {
                 <MenuItem onClick={handleClose}>
                     <Avatar /> Profile
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <Avatar /> My account
-                </MenuItem>
+
                 <Divider />
+
                 <MenuItem onClick={handleClose}>
-                <ListItemIcon>
-                    <PersonAdd fontSize="small" />
-                </ListItemIcon>
-                    Add another account
+                    <ListItemIcon>
+                        <Settings fontSize="small" />
+                    </ListItemIcon>
+                        Settings
                 </MenuItem>
+
                 <MenuItem onClick={handleClose}>
-                <ListItemIcon>
-                    <Settings fontSize="small" />
-                </ListItemIcon>
-                    Settings
+                    <ListItemIcon>
+                        <Logout fontSize="small" />
+                    </ListItemIcon>
+                        Logout
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
-                <ListItemIcon>
-                    <Logout fontSize="small" />
-                </ListItemIcon>
-                    Logout
-                </MenuItem>
-            </Menu> */}
+            </Menu>
         </Fragment>
     );
 };

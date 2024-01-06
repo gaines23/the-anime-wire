@@ -1,9 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import { Box, Button, Card, CardContent, Checkbox, Divider, FormControlLabel, MenuItem, Stack, Typography } from "@mui/material";
-import { getAnimeCats, getGenresList, getStreamingList } from "../../lib/aw-api";
+import { getAnimeCats, getGenresList, getStreamingList, postNewUserRegs } from "../../lib/aw-api";
 import CloseIcon from '@mui/icons-material/Close';
-import { CheckBox } from "@mui/icons-material";
 
 const UserOptions = ({handleClose}) => {
     const [getCats, setCats] = useState([]);
@@ -12,7 +11,9 @@ const UserOptions = ({handleClose}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [expandedIds, setExpandedIds] = useState([]);
 
-    const [selectedCats, setSelectedCats] = ([]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [selectedGenres, setSelectedGenres] = useState([]);
+    const [selectedServices, setSelectedServices] = useState([]);
 
     useEffect(() => {
         let isMounted = true;
@@ -51,18 +52,51 @@ const UserOptions = ({handleClose}) => {
         }
     };
 
+    const handleCategoryClick = (categoryId) => {
+        if (selectedCategories.includes(categoryId)) {
+            setSelectedCategories((prevCategories) => prevCategories.filter((id) => id !== categoryId));
+        } else {
+            setSelectedCategories((prevCategories) => [...prevCategories, categoryId]);
+        }
+    };
+    
+    const handleGenreClick = (genreId) => {
+        if (selectedGenres.includes(genreId)) {
+            setSelectedGenres((prevGenres) => prevGenres.filter((id) => id !== genreId));
+        } else {
+            setSelectedGenres((prevGenres) => [...prevGenres, genreId]);
+        }
+    };
+    
+    const handleServiceClick = (serviceId) => {
+        if (selectedServices.includes(serviceId)) {
+            setSelectedServices((prevServices) => prevServices.filter((id) => id !== serviceId));
+        } else {
+            setSelectedServices((prevServices) => [...prevServices, serviceId]);
+        }
+    };
+    
+    const handleSave = async (e) => {
+        e.preventDefault();
 
-    // const submitProfile = (e) => {
-    //     e.preventDefault();
-    //     const services = getServices.map(y => parseInt(y));
-    //     setIsLoading(true);
+        const info = {
+            'anime_categories': selectedCategories || [],
+            'streaming_services': selectedServices || [],
+            'anime_genres': selectedGenres || []
+        }
 
-    //     sendRequest({ 
-    //         streaming_services: services
-    //     });
+        try {
+            //await postNewUserRegs({info});
+            localStorage.removeItem('new_auth');
+            handleClose();
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-    //     localStorage.removeItem('newFollower');
-    // };
+    // console.log(selectedCategories)
+    // console.log(selectedGenres)
+    // console.log(selectedServices)
 
     return (
         <Fragment>
@@ -83,7 +117,7 @@ const UserOptions = ({handleClose}) => {
 
                 <Divider variant="middle" sx={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} />
                 
-                <form className="p-2 rounded-md">
+                <form className="p-2 rounded-md" onSubmit={handleSave}>
                     <div className="w-full h-auto flex">
                         <div className="w-full h-max grid grid-cols-1 grid-rows-auto pb-3">
                             
@@ -95,11 +129,12 @@ const UserOptions = ({handleClose}) => {
                                 <div className="grid grid-cols-3 grid-rows-auto gap-4">
                                     {getCats.map((item) => (
                                         <div key={item.id} className="col-span-1 row-span-1">
-                                            <Card 
-                                                className="w-full h-full" 
+                                           <Card
+                                                className="w-full h-full"
                                                 sx={{
                                                     backdropFilter: 'blur(8px)',
-                                                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                                    backgroundColor: selectedCategories.includes(item.id)
+                                                        ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
                                                     borderRadius: '8px',
                                                     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
                                                     overflow: 'hidden',
@@ -118,12 +153,13 @@ const UserOptions = ({handleClose}) => {
                                                         <div className="ml-auto">
                                                             <Checkbox 
                                                             sx={{
-                                                                color: '#F7F8FD',
+                                                                color: '#5FDCE1',
                                                                 '&.Mui-checked': {
-                                                                color: '#F7F8FD',
+                                                                    color: '#5FDCE1',
                                                                 },
                                                             }}
                                                             size="large"
+                                                            onClick={() => handleCategoryClick(item.id)}
                                                             />
                                                         </div>
                                                     </div>
@@ -182,15 +218,17 @@ const UserOptions = ({handleClose}) => {
                                         <div key={g.id} className="w-max h-max flex">
                                             <FormControlLabel
                                                 control={
-                                                <Checkbox
-                                                    sx={{
-                                                        color: '#F7F8FD',
-                                                        '&.Mui-checked': {
-                                                            color: '#F7F8FD',
-                                                        },
-                                                        fontSize: '12px',
-                                                    }}
-                                                />
+                                                    <Checkbox
+                                                        sx={{
+                                                            color: '#5FDCE1',
+                                                            '&.Mui-checked': {
+                                                                color: '#5FDCE1',
+                                                            },
+                                                            fontSize: '12px',
+                                                        }}
+                                                        checked={selectedGenres.includes(g.id)}
+                                                        onChange={() => handleGenreClick(g.id)}
+                                                    />
                                                 }
                                                 label={g.genre}
                                                 value={g.id}
@@ -214,34 +252,45 @@ const UserOptions = ({handleClose}) => {
 
                                 <div className="rounded-md bg-bg-fill/10 p-3">
                                     <div className="grid grid-cols-7 grid-rows-auto h-full w-5/6 gap-3 mx-auto">
-                                        {getStreaming.map((service) =>
-                                            <div key={service.id} sx={{paddingX: '1px'}}>
-                                                <button 
-                                                    //onClick={() => handleClick(service.id)}
-                                                        key={service.id}
-                                                        className= "w-10 h-10 mx-auto rounded-xl outline-none hover:scale-125 ease-in-out duration-700"
-                                                        title={service.streaming_name}
-                                                    >
-                                                    <img
-                                                        id={"service_img_" + service.streaming_name} 
-                                                        src={require(`../../${service.logo_url}`)}
-                                                        alt={service.id}
-                                                        className="transition w-10 h-10 mx-auto rounded-xl outline-none opacity-60 foucs:outline-none hover:outline hover:outline-1 hover:outline-input-fill hover:opacity-100"
-                                                        // {getServices.includes(service.id) ? 
-                                                        //     "transition w-10 h-10 mx-auto rounded-xl outline outline-2 outline-ec-purple-text shadow-sm shadow-ec-purple-text" : 
-                                                        //     "transition w-10 h-10 mx-auto rounded-xl outline-none opacity-60 foucs:outline-none hover:outline hover:outline-1 hover:outline-input-fill hover:opacity-100"
-                                                        // }
-                                                />                                  
-                                                </button>
+                                    {getStreaming.map((service) => (
+                                        <div key={service.id} sx={{ paddingX: '1px' }}>
+                                            <div
+                                                key={service.id}
+                                                title={service.streaming_name}
+                                                onClick={() => handleServiceClick(service.id)}
+                                                className="p-1"
+                                            >
+                                                <img
+                                                    id={"service_img_" + service.streaming_name}
+                                                    src={require(`../../${service.logo_url}`)}
+                                                    alt={service.id}
+                                                    className={`w-10 h-10 mx-auto rounded-lg outline-none hover:scale-125 ease-in-out duration-500 ${
+                                                        selectedServices.includes(service.id)
+                                                            ? 'outline-2 outline-aw-teal shadow-sm shadow-aw-teal scale-125'
+                                                            : 'outline-none opacity-60 foucs:outline-none hover:outline hover:outline-1 hover:outline-input-fill hover:opacity-100'
+                                                    }`}
+                                                />
                                             </div>
-                                        )}
+                                        </div>
+                                    ))}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <Button>Save</Button>
+                    
+                    <div className="w-full h-12 flex px-2">
+                        <div className="w-max h-max ml-auto">
+                            <button 
+                                type="submit" 
+                                onClick={handleSave}
+                                className="text-text-white font-light p-2 capitalize w-20 h-10 bg-aw-teal/90 rounded-md hover:bg-aw-teal"
+                            >
+                               Save
+                            </button>
+                        </div>
+                    </div>
+                    
                 </form>
             </Box>
         </Fragment>

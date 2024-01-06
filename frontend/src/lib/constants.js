@@ -13,6 +13,8 @@ let anime_cats = process.env.REACT_APP_CATEGORIES;
 let anime_genres = process.env.REACT_APP_GENRES;
 let streaming_services = process.env.REACT_APP_STREAMING_SERVICES;
 
+let new_user_registered = process.env.REACT_APP_REGISTERED_USER_FORM;
+
 export {
     login_url,
     user_token,
@@ -24,4 +26,5 @@ export {
     anime_cats,
     anime_genres,
     streaming_services,
+    new_user_registered,
 }
