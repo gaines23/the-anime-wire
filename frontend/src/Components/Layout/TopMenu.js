@@ -36,15 +36,15 @@ const TopMenu = () => {
                     width: "100%",
                 }}
             >
-                <div className="w-full h-max grid grid-cols-3">
-                    <div className="w-full h-full col-span-1 mb-auto flex">
+                <div className="w-full h-max flex">
+                    {/* <div className="w-full h-full col-span-1 mb-auto flex">
                         <div className="w-max h-max flex px-2 m-auto">
                             {/* <Typography sx={{ minWidth: 100 }}>Contact</Typography>
-                            <Typography sx={{ minWidth: 100 }}>Profile</Typography> */}
+                            <Typography sx={{ minWidth: 100 }}>Profile</Typography>
                         </div>
-                    </div>
+                    </div> */}
                     
-                    <div className="w-full h-fit flex col-span-1">
+                    <div className="w-full h-fit flex">
                         <div className="w-max h-full mx-auto">
                             <img 
                                 src={NewAW}
@@ -53,9 +53,9 @@ const TopMenu = () => {
                         </div>
                     </div>
 
-                    <div className="w-full flex col-span-1 px-2 h-full">
+                    {/* <div className="w-full flex col-span-1 px-2 h-full">
                         <div className="w-max mx-auto my-auto">
-                            {/* <IconButton
+                            <IconButton
                                 onClick={handleClick}
                                 size="small"
                                 sx={{ ml: 2 }}
@@ -64,13 +64,13 @@ const TopMenu = () => {
                                 aria-expanded={anchorEl ? "true" : undefined}
                             >
                                 <Avatar sx={{ width: 32, height: 32 }}>A</Avatar>
-                            </IconButton> */}
+                            </IconButton>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </Box>
 
-            <Menu
+            {/* <Menu
                 anchorEl={anchorEl}
                 id="account-menu"
                 open={open}
@@ -130,7 +130,7 @@ const TopMenu = () => {
                 </ListItemIcon>
                     Logout
                 </MenuItem>
-            </Menu>
+            </Menu> */}
         </Fragment>
     );
 };

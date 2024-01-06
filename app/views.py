@@ -40,6 +40,7 @@ from .serializers import (
     , UserUpdatePassword
     , SignUpsSerializer
     , AnimeCategoriesSerializer
+    , NewUserSelectSerializer
 )
 
 
@@ -53,7 +54,7 @@ class NewTokenObtainPairView(TokenObtainPairView):
 
 class UserCreate(APIView):
     permission_classes = [AllowAny]
-    
+
     def post(self, request, *args, **kwargs):
         serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid():
@@ -143,3 +144,8 @@ class AnimeCategoriesList(APIView):
         cats = AnimeCategories.objects.all()
         serializer = AnimeCategoriesSerializer(cats, many=True).data
         return Response(serializer, status=status.HTTP_200_OK)
+    
+# class NewUserSelections(APIView):
+#     def post(self, request, *args, **kwargs):
+#         user = request.user.id
+        

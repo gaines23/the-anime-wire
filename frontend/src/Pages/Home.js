@@ -3,7 +3,7 @@ import { PageSection_Main } from "../Components/UI/FormStyles";
 
 const Home = () => {
     return (
-        <div className={PageSection_Main}>
+        <div className="flex w-full mx-auto">
             <HomePage />
         </div>
     ); 

@@ -24,27 +24,27 @@ const HomePage = () => {
 
     return (
         <Fragment>
-            <div className="container w-full h-full px-3">
+            <div className="w-full h-full px-3">
                 <h1 className="w-max h-fit center align-center m-auto">HOME</h1>               
             
 
-            {localStorage.getItem('new_auth') &&
-                (<Modal
-                    open={openNewUser}
-                    onClose={handleCloseNew}
-                    className="bg-opacity-50 bg-white/10 bg-blend-normal h-full"
-                    sx={{
-                        position: 'relative'
-                    }}
-                >
-                    <div>
-                        <UserOptions 
-                            handleClose={handleCloseNew}
-                            handleOpen={handleOpenNew}
-                        />
-                    </div>
-                </Modal>
-            )}
+                {localStorage.getItem('new_auth') &&
+                    (<Modal
+                        open={openNewUser}
+                        onClose={handleCloseNew}
+                        className="bg-opacity-50 bg-white/10 bg-blend-normal h-full"
+                        sx={{
+                            position: 'relative'
+                        }}
+                    >
+                        <div>
+                            <UserOptions 
+                                handleClose={handleCloseNew}
+                                handleOpen={handleOpenNew}
+                            />
+                        </div>
+                    </Modal>
+                )}
             </div>
         </Fragment>
     );

@@ -11,6 +11,8 @@ const UserOptions = ({handleClose}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [expandedIds, setExpandedIds] = useState([]);
 
+    const [selectedCats, setSelectedCats] = ([]);
+
     const { sendRequest, status, error, data } = useHttp(getAnimeCats, true);
    
     useEffect(() => {
@@ -49,7 +51,7 @@ const UserOptions = ({handleClose}) => {
 
     return (
         <Fragment>
-            <Box className="w-2/3 h-5/6 inline-grid border p-1 border-solid border-2 border-aw-teal fixed overflow-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-2xl bg-form-purple text-text-white rounded-lg">
+            <Box className="w-2/3 h-5/6 inline-grid border p-1 border-solid border-1 border-aw-teal fixed overflow-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-2xl bg-form-purple text-text-white rounded-lg">
                 <div className="w-full h-full m-auto px-1">
                     <div className="w-max h-max my-auto float-left flex mt-3 mb-5 p-1">
                         <h2 className="text-xl font-extrabold w-max px-1">

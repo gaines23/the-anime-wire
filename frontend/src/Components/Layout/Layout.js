@@ -3,6 +3,7 @@ import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi';
 import AuthContext from '../../store/auth-context';
 import { Box } from '@mui/material';
 import TopMenu from './TopMenu';
+import Sidebar from './Sidebar';
 
 /*
     sm - 640
@@ -14,57 +15,34 @@ import TopMenu from './TopMenu';
 */
 
 const Layout = (props) => {
-    const [isOpen, setIsOpen] = useState(true);
-
-    const handleToggle = () => {
-        setIsOpen(!isOpen);
-    }
-
     const authCtx = useContext(AuthContext);
 
     const isLoggedIn = authCtx.isLoggedIn;
     
     return (
         <Fragment>
-            <div className="h-full w-full static bg-gradient-to-b from-med-blue/70 to-light-blue">
-                {/* DELETE AND UPDATE CSS */}
+            <div className="h-screen w-screen flex flex-col p-3">          
                 <TopMenu />
 
-                <div className="h-full w-full mx-auto flex overflow-hidden">
-                    {/* <div className="w-fit h-full flex flex-col py-3 ease-in">
-                        <div className="w-full h-full mx-auto flex flex-col">
-                            {isLoggedIn ? (
-                                <> 
-                                    {isOpen ? <SideBarOpen /> : <SideBarClosed setIsOpen={setIsOpen}/>}
-                                </>
-                            ): 
-                                <SideBarOpen />
-                            }
+                { isLoggedIn ?
+                    <div className="grid grid-cols-12 w-screen h-full overflow-y-auto overflow-x-hidden scroll-smooth scrollbar scrollbar-height:sm scrollbar-width:thin scrollbar-thumb-text-purple/60 scrollbar-track-transparent">
+                        <div className="w-full px-2 py-3 flex flex-col col-span-1 hidden sm:flex md:col-span-2 lg:col-span-1 xl:col-span-1 2xl:col-span-1">
+                            <Sidebar />
                         </div>
-                        {isLoggedIn &&
-                            <div className="flex group px-1 h-8 w-5/6 mx-auto rounded-lg hover:border hover:border-1 hover:border-text-white/50 outline-none hover:shadow hover:shadow-md hover:shadow-text-white/10">
-                                <button 
-                                    className="w-full h-8"
-                                    onClick={handleToggle}
-                                    title={isOpen ? "Hide" : "Expand"}
-                                >
-                                    <p className="w-fit h-fit m-auto text-center text-input-fill/70 text-md">
-                                        {isOpen ? <HiChevronDoubleLeft /> : <HiChevronDoubleRight />}
-                                    </p>
-                                </button>
-                            </div>
-                        }
-                    </div> */}
-                 
-                    <div className="w-full h-screen sticky z-100 grid grid-flow-col">
-                        <main className="h-screen w-full mx-auto rounded-l-md grid auto-rows-max grid-flow-col grid-cols-12">
-                            <Box className="w-full h-screen flex flex-col col-span-full px-3">
+
+                        <main className="flex w-full col-span-11 sm:col-span-12 md:col-span-10 lg:col-span-11 xl:col-span-11 2xl:col-span-11">
+                            <Box className="h-full w-full">
                                 {props.children}
                             </Box>
                         </main>
                     </div>
-                     
-                </div>
+                :   
+                    <main className="flex w-full h-screen">
+                        <Box className="h-full w-full flex">
+                            {props.children}
+                        </Box>
+                    </main>
+                }
             </div>
         </Fragment>
     );
