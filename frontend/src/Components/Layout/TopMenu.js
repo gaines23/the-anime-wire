@@ -8,12 +8,12 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 import NewAW from '../../assets/250x100.png';
+import AuthContext from "../../store/auth-context";
 
 const TopMenu = () => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -25,6 +25,8 @@ const TopMenu = () => {
       setAnchorEl(null);
     };
 
+    const authCtx = useContext(AuthContext);
+    const isLoggedIn = authCtx.isLoggedIn;
 
     return (
         <Fragment>
@@ -36,28 +38,32 @@ const TopMenu = () => {
                             <Typography sx={{ minWidth: 100 }}>Profile</Typography> */}
                         </div>
                     </div>
-                    
+
                     <div className="w-full h-fit flex col-span-1">
-                        <div className="w-max h-full mx-auto">
-                            <img 
-                                src={NewAW}
-                                className="w-auto h-24 m-auto"
-                            />
-                        </div>
+                        { !isLoggedIn &&
+                            <div className="w-max h-full mx-auto">
+                                <img
+                                    src={NewAW}
+                                    className="w-auto h-24 m-auto"
+                                />
+                            </div>
+                        }
                     </div>
 
                     <div className="w-full flex col-span-1 h-fit">
                         <div className="w-max h-max ml-auto my-auto px-5">
-                            <IconButton
-                                onClick={handleClick}
-                                size="small"
-                                sx={{ ml: 2 }}
-                                aria-controls={anchorEl ? "account-menu" : undefined}
-                                aria-haspopup="true"
-                                aria-expanded={anchorEl ? "true" : undefined}
-                            >
-                                <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
-                            </IconButton>
+                            { isLoggedIn &&
+                                <IconButton
+                                    onClick={handleClick}
+                                    size="small"
+                                    sx={{ ml: 2 }}
+                                    aria-controls={anchorEl ? "account-menu" : undefined}
+                                    aria-haspopup="true"
+                                    aria-expanded={anchorEl ? "true" : undefined}
+                                >
+                                    <Avatar sx={{ width: 32, height: 32, backgroundColor: '#5FDCE1' }}>M</Avatar>
+                                </IconButton>
+                            }
                         </div>
                     </div>
                 </div>
@@ -99,6 +105,10 @@ const TopMenu = () => {
             >
                 <MenuItem onClick={handleClose}>
                     <Avatar /> Profile
+                </MenuItem>
+
+                <MenuItem onClick={handleClose}>
+                    <PersonAddIcon fontSize="small" /> Invite Friends
                 </MenuItem>
 
                 <Divider />
