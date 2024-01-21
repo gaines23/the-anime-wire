@@ -15,6 +15,8 @@ let streaming_services = process.env.REACT_APP_STREAMING_SERVICES;
 
 let new_user_registered = process.env.REACT_APP_REGISTERED_USER_FORM;
 
+let get_moveis_tv = process.env.REACT_APP_SEARCH_MOVIES_TV;
+
 export {
     login_url,
     user_token,
@@ -27,4 +29,5 @@ export {
     anime_genres,
     streaming_services,
     new_user_registered,
+    get_moveis_tv,
 }

@@ -10,6 +10,8 @@ import datetime
 from django.core.paginator import Paginator
 from itertools import groupby
 from collections import defaultdict
+import boto3
+import requests
 
 from rest_framework.views import APIView
 from django.http.response import JsonResponse
@@ -28,6 +30,8 @@ from django.core.exceptions import ValidationError
 from django.forms.models import model_to_dict
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny
+from tmdbv3api import TMDb
+from tmdbv3api import Search, Movie, TV, Credit, Collection
 
 from .models import (
     ProfileSettings,
@@ -48,12 +52,25 @@ from .serializers import (
 )
 
 
+ssm_client = boto3.client('ssm', region_name='us-west-1')
+
+def get_parameter(parameter_name):
+    response = ssm_client.get_parameter(Name=parameter_name, WithDecryption=True)
+    return response['Parameter']['Value']
+
 env = environ.Env()
 environ.Env.read_env()
 
 class NewTokenObtainPairView(TokenObtainPairView):
     serializer_class = NewTokenObtainPairSerializer
 
+tmdb = TMDb()
+TMDB_KEY = get_parameter('/tmdb/key')
+tmdb.api_key = TMDB_KEY
+
+IMDB_KEY = get_parameter('/imdb/rapidapi')
+IMDB_HOST = get_parameter('/imdb/rapidapi/url')
+IMDB_URL = "https://imdb8.p.rapidapi.com"
 
 
 class UserCreate(APIView):
@@ -177,3 +194,32 @@ class NewUserSelections(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+### SEARCH ###
+
+## search movies and tv ##
+class SearchAllCategories(APIView):
+    def get(self, request, title, *args, **kwargs):
+        url = IMDB_URL + '/title/v2/find'
+        querystring = {"title": title,
+                       "titleType":"movie,tvSeries,tvMiniSeries,tvMovie,tvSpecial,tvShort", 
+                       "limit":"20",
+                       "sortArg":"moviemeter,asc",
+                       "genre":"anime,animation"
+                    }
+
+        headers = {
+            "X-RapidAPI-Key": IMDB_KEY,
+            "X-RapidAPI-Host": IMDB_HOST
+        }
+
+        response = requests.get(url, headers=headers, params=querystring)
+
+        try:
+            # Parse the response as JSON
+            json_response = response.json()
+            return Response(json_response, status=status.HTTP_200_OK)
+        except ValueError:
+            # Handle JSON decoding error
+            return Response({"error": "Invalid JSON response"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

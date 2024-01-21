@@ -1,11 +1,9 @@
 import { Fragment, useState, useContext } from 'react';
-import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi';
 import AuthContext from '../../store/auth-context';
-import { Box, Divider } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import TopMenu from './TopMenu';
 import Sidebar from './Sidebar';
 
-import NewAW from '../../assets/150x100.png';
 /*
     sm - 640
     md - 768
@@ -25,28 +23,19 @@ const Layout = (props) => {
             <div className="h-screen w-screen flex flex-col py-3">
 
                 { isLoggedIn ?
-                    <div className="grid grid-cols-12 w-screen h-full">
-                        <div className="w-full pr-2 flex flex-col col-span-2 hidden sm:flex md:col-span-2 lg:col-span-1 xl:col-span-2 2xl:col-span-2">
-                        
-                            <div className="w-full h-max mx-auto">
-                                <img 
-                                    src={NewAW}
-                                    className="w-max h-fit m-auto"
-                                />
-                            </div>
-
+                    <div className="w-screen h-full flex flex-row">
+                        <div className="w-full basis-1/12 h-full">
                             <Sidebar />
                         </div>
 
-                        <main className="flex w-full px-3 col-span-10 sm:col-span-12 md:col-span-10 lg:col-span-11 xl:col-span-10 2xl:col-span-10">
-                            <div className='w-screen h-full col-span-1'>
-                                <TopMenu />
-
-                                <Box className="h-full w-full overflow-y-auto overflow-x-hidden scroll-smooth scrollbar scrollbar-height:sm scrollbar-width:thin scrollbar-thumb-text-purple/60 scrollbar-track-transparent">
+                        <Stack className="w-full flex basis-11/12">
+                            <main className="h-screen w-full mx-auto rounded-l-md grid auto-rows-max grid-flow-col grid-cols-12">
+                                <Box className="w-full h-screen flex flex-col col-span-full px-1">
+                                    <TopMenu />
                                     {props.children}
                                 </Box>
-                            </div>
-                        </main>
+                            </main> 
+                        </Stack>
                     </div>
                 : <>
                     <TopMenu />

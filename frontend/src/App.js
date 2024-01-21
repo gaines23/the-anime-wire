@@ -10,6 +10,7 @@ const Home = React.lazy(() => import ('./Pages/Home'));
 const UnderConstruction = React.lazy(() => import ('./Pages/UnderConstruction'))
 const Login = React.lazy(() => import ('./Pages/Login'));
 const Register = React.lazy(() => import ('./Pages/Register'));
+const Search = React.lazy(() => import ('./Pages/Search'));
 
 const NotFound = React.lazy(() => import ('./Pages/NotFound'));
 
@@ -45,6 +46,7 @@ function App() {
             <Fragment>
               <Route path='/' element={<Navigate to='/home/logged_in' />} />
               <Route path='/home/logged_in' element={<Home />} />
+              <Route path='/search' element={<Search />} />
             </Fragment>
           )}
 

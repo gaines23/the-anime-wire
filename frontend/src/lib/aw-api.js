@@ -8,8 +8,8 @@ import {
     anime_cats,
     anime_genres,
     streaming_services,
-    new_user_registered
-    
+    new_user_registered,
+    get_moveis_tv
 } from './constants';
 
 // Send email verification before setting new password //
@@ -173,6 +173,24 @@ export async function postNewUserRegs({info}) {
             'Authorization': `Bearer ${user_token}`
         },
         body: JSON.stringify(info),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(response.status_message);
+    }
+
+    return data;
+}
+
+
+export async function getSearchMovieTv({searchTerm}) {
+    const response = await fetch(`${get_moveis_tv}${searchTerm}/`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
     });
 
     const data = await response.json();

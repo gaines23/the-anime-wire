@@ -11,6 +11,7 @@ from app.views import (
     StreamingList,
     AllGenreList,
     NewUserSelections,
+    SearchAllCategories,
 )
 
 from rest_framework_simplejwt.views import (
@@ -33,4 +34,6 @@ urlpatterns = [
     path('streaming_services/', StreamingList.as_view(), name='streaming_services'),
 
     path('new-user/registered/selections/', NewUserSelections.as_view(), name='reg_selections'),
+
+    path('api/search/all/<str:title>/', SearchAllCategories.as_view(), name='search'),
 ]

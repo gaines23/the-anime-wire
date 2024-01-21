@@ -12,6 +12,7 @@ const UnderConstructionPage = () => {
         try {
             await postUserSignups({email: new_email});
             alert("Thanks for the submission! Keep an eye out for new updates.");
+            setEmail('');
         } catch (error) {
             console.log(error);
         }
