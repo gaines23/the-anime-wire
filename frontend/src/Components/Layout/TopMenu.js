@@ -80,7 +80,7 @@ const TopMenu = () => {
 
                         {isLoggedIn && 
                             <div className="h-full w-full flex">
-                                <div className="h-max w-full h-12 py-1 px-3 bg-bg-white/10 rounded-3xl my-auto flex">
+                                <div className="h-max w-full h-12 py-1 px-3 bg-purple-bg/30 rounded-3xl my-auto flex">
                                     <input
                                         type="text"
                                         placeholder="Search..."

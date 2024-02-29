@@ -17,6 +17,8 @@ let new_user_registered = process.env.REACT_APP_REGISTERED_USER_FORM;
 
 let get_moveis_tv = process.env.REACT_APP_SEARCH_MOVIES_TV;
 
+let get_movie_details = process.env.REACT_APP_GET_MOVIE;
+
 export {
     login_url,
     user_token,
@@ -30,4 +32,5 @@ export {
     streaming_services,
     new_user_registered,
     get_moveis_tv,
+    get_movie_details,
 }

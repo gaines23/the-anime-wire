@@ -41,10 +41,10 @@ const Sidebar = () => {
                     </button>
                 </div>
 
-                <div className="w-full h-5/6 inline-block border border-aw-teal/10 bg-bg-white/10 rounded-md py-2 my-1">
+                <div className="w-full h-5/6 inline-block border border-aw-teal/10 bg-purple-bg/30 rounded-md py-2 my-1">
                     <Stack className="h-1/3 w-5/6 m-auto">
                         <Tooltip
-                            title="Home"
+                            //title="Home"
                             arrow
                             placement={"right"}
                             slotProps={{
@@ -61,7 +61,7 @@ const Sidebar = () => {
                             }}
                         >
                             <Link to="/" className="w-full h-full">
-                                <ul className={`${isOpen ? 'w-full h-full' : 'w-10'} m-auto cursor-pointer hover:bg-bg-white/20 rounded-xl`}>
+                                <ul className={`${isOpen ? 'w-full h-full' : 'w-10'} m-auto cursor-pointer hover:bg-bg-white/10 rounded-xl`}>
                                     <div className={`h-10 flex m-auto ${isOpen ? 'w-24 h-full' : 'w-max'}`}>
                                         <HomeIcon size="small" className={`h-max ${isOpen ? 'my-auto pr-1' : 'm-auto'}`} />
                                         <span className={`text-sm h-4 my-auto ${isOpen ? 'pl-1' : 'hidden'}`}>Home</span>
@@ -70,7 +70,7 @@ const Sidebar = () => {
                             </Link>
                         </Tooltip>
                         <Tooltip
-                            title="Search"
+                            //title="Search"
                             arrow
                             placement={"right"}
                             slotProps={{
@@ -87,7 +87,7 @@ const Sidebar = () => {
                             }}
                         >
                             <Link to="/search" className="w-full h-full">
-                                <ul className={`${isOpen ? 'w-full h-full' : 'w-10'} m-auto cursor-pointer hover:bg-bg-white/20 rounded-xl`}>
+                                <ul className={`${isOpen ? 'w-full h-full' : 'w-10'} m-auto cursor-pointer hover:bg-bg-white/10 rounded-xl`}>
                                     <div className={`h-10 flex m-auto ${isOpen ? 'w-24 h-full' : 'w-max'}`}>
                                         <SearchIcon size="small" className={`h-max ${isOpen ? 'my-auto pr-1' : 'm-auto'}`}/>
                                         <span className={`text-sm h-max my-auto ${isOpen ? 'pl-1' : 'hidden'}`}>Search</span>
@@ -104,7 +104,7 @@ const Sidebar = () => {
                         </ul>
 
                         <Tooltip
-                            title="Friends"
+                           // title="Friends"
                             arrow
                             placement={"right"}
                             slotProps={{
@@ -120,7 +120,7 @@ const Sidebar = () => {
                                 },
                             }}
                         >
-                            <ul className={`${isOpen ? 'w-full h-full' : 'w-10'} m-auto cursor-pointer hover:bg-bg-white/20 rounded-xl`}>
+                            <ul className={`${isOpen ? 'w-full h-full' : 'w-10'} m-auto cursor-pointer hover:bg-bg-white/10 rounded-xl`}>
                                 <div className={`h-10 flex m-auto ${isOpen ? 'w-24 h-full' : 'w-max'}`}>
                                     <Diversity3Icon size="small" className={`h-max ${isOpen ? 'my-auto pr-1' : 'm-auto'}`} />
                                     <span className={`text-sm h-4 my-auto ${isOpen ? 'pl-1' : 'hidden'}`}>Friends</span>
@@ -129,7 +129,7 @@ const Sidebar = () => {
                         </Tooltip>
                         
                         <Tooltip
-                            title="Discover"
+                           // title="Discover"
                             arrow
                             placement={"right"}
                             slotProps={{
@@ -145,7 +145,7 @@ const Sidebar = () => {
                                 },
                             }}
                         >
-                            <ul className={`${isOpen ? 'w-full h-full' : 'w-10'} m-auto cursor-pointer hover:bg-bg-white/20 rounded-xl`}>
+                            <ul className={`${isOpen ? 'w-full h-full' : 'w-10'} m-auto cursor-pointer hover:bg-bg-white/10 rounded-xl`}>
                                 <div className={`h-10 flex m-auto ${isOpen ? 'w-24 h-full' : 'w-max'}`}>
                                     <LightbulbIcon size="small" className={`h-max ${isOpen ? 'my-auto pr-1' : 'm-auto'}`} />
                                     <span className={`text-sm h-4 my-auto ${isOpen ? 'pl-1' : 'hidden'}`}>Discover</span>
@@ -163,7 +163,7 @@ const Sidebar = () => {
                         </ul>
 
                         <Tooltip
-                            title="Favorites"
+                            //title="Favorites"
                             arrow
                             placement={"right"}
                             slotProps={{
@@ -179,7 +179,7 @@ const Sidebar = () => {
                                 },
                             }}
                         >
-                            <ul className={`${isOpen ? 'w-full  h-full' : 'w-10'} m-auto cursor-pointer hover:bg-bg-white/20 rounded-xl`}>
+                            <ul className={`${isOpen ? 'w-full  h-full' : 'w-10'} m-auto cursor-pointer hover:bg-bg-white/10 rounded-xl`}>
                                 <div className={`h-10 flex m-auto ${isOpen ? 'w-24 h-full' : 'w-max'}`}>
                                     <FavoriteIcon size="small" className={`h-max ${isOpen ? 'my-auto pr-1' : 'm-auto'}`} />
                                     <span className={`text-sm h-4 my-auto ${isOpen ? 'pl-1' : 'hidden'}`}>Favorites</span>
@@ -188,7 +188,7 @@ const Sidebar = () => {
                         </Tooltip>
 
                         <Tooltip
-                            title="Watchlist"
+                            //title="Watchlist"
                             arrow
                             placement={"right"}
                             slotProps={{
@@ -204,7 +204,7 @@ const Sidebar = () => {
                                 },
                             }}
                         >
-                            <ul className={`${isOpen ? 'w-full h-full' : 'w-10'} m-auto cursor-pointer hover:bg-bg-white/20 rounded-xl`}>
+                            <ul className={`${isOpen ? 'w-full h-full' : 'w-10'} m-auto cursor-pointer hover:bg-bg-white/10 rounded-xl`}>
                                 <div className={`h-10 flex m-auto ${isOpen ? 'w-24 h-full' : 'w-max'}`}>
                                     <PersonalVideoIcon size="small" className={`h-max ${isOpen ? 'my-auto pr-1' : 'm-auto'}`} />
                                     <span className={`text-sm h-4 my-auto ${isOpen ? 'pl-1' : 'hidden'}`}>Watchlist</span>

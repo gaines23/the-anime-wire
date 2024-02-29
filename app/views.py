@@ -31,7 +31,7 @@ from django.forms.models import model_to_dict
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny
 from tmdbv3api import TMDb
-from tmdbv3api import Search, Movie, TV, Credit, Collection
+from tmdbv3api import Search, Movie, TV, Credit, Collection, Person, Find
 
 from .models import (
     ProfileSettings,
@@ -65,8 +65,16 @@ class NewTokenObtainPairView(TokenObtainPairView):
     serializer_class = NewTokenObtainPairSerializer
 
 tmdb = TMDb()
-TMDB_KEY = get_parameter('/tmdb/key')
-tmdb.api_key = TMDB_KEY
+tmdb.api_key = get_parameter('/tmdb/key')
+TMDB_URL = 'https://api.themoviedb.org/3'
+tmdb_key = get_parameter('/tmdb/bearer')
+
+movie = Movie()
+tv = TV()
+series = Collection()
+person = Person()
+search = Search()
+find = Find()
 
 IMDB_KEY = get_parameter('/imdb/rapidapi')
 IMDB_HOST = get_parameter('/imdb/rapidapi/url')
@@ -220,6 +228,47 @@ class SearchAllCategories(APIView):
             # Parse the response as JSON
             json_response = response.json()
             return Response(json_response, status=status.HTTP_200_OK)
+        except ValueError:
+            # Handle JSON decoding error
+            return Response({"error": "Invalid JSON response"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+class MovieInformationAPI(APIView):
+    def get(self, request, id, *args, **kwargs):
+        find_id = find.find_by_imdb_id(id)
+        movieid = find_id.movie_results[0]['id']
+
+        movie_url = TMDB_URL + '/movie/' 
+
+        headers = {
+            "accept": "application/json",
+            "Authorization": tmdb_key
+        }
+
+        
+        details_url = movie_url + str(movieid) + "?append_to_response=videos%2Ctrailers%2Cimages%2Ccasts%2Crelease_dates&language=en-US"
+        d_response = requests.get(details_url, headers=headers)
+        d_data = d_response.json()
+
+        streaming_url = movie_url + str(movieid) + '/watch/providers'
+        s_response = requests.get(streaming_url, headers=headers)
+        s_data = s_response.json()
+        streaming = s_data.get('results', {})
+
+        img_url = movie_url + str(movieid) + '/images'
+        i_response = requests.get(img_url, headers=headers)
+        i_data = i_response.json()
+        bg_images = i_data.get('backdrops', {})
+        p_images = i_data.get('posters', {})
+
+        try:
+            return Response({
+                'details': d_data,
+                'streaming': streaming,
+                'imdb_id': id,
+                'backdrops': bg_images,
+                'posters': p_images
+            })
         except ValueError:
             # Handle JSON decoding error
             return Response({"error": "Invalid JSON response"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

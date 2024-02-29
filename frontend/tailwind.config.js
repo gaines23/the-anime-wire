@@ -11,10 +11,11 @@ module.exports = {
           'bg-fill': '#FFFFFF',
           'dark-purple': '#160224',
           'text-purple': '#7843E6',
-          'bg-white': '#D9D9D9',
+          'bg-white': '#f9f5f503',
           'form-purple': '#400080',
           'aw-teal': '#5FDCE1',
           'aw-teal-border': '#5FDCE136',
+          'purple-bg': '#331b405e',
         },
         height: {
           '38': '10rem',
