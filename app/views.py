@@ -80,6 +80,10 @@ IMDB_KEY = get_parameter('/imdb/rapidapi')
 IMDB_HOST = get_parameter('/imdb/rapidapi/url')
 IMDB_URL = "https://imdb8.p.rapidapi.com"
 
+MDBA_KEY = get_parameter('/mdba/key')
+MDBA_URL = get_parameter('/mdba/url')
+MBDA_HOST = 'movie-database-alternative.p.rapidapi.com'
+
 
 class UserCreate(APIView):
     permission_classes = [AllowAny]
@@ -245,10 +249,12 @@ class MovieInformationAPI(APIView):
             "Authorization": tmdb_key
         }
 
-        
         details_url = movie_url + str(movieid) + "?append_to_response=videos%2Ctrailers%2Cimages%2Ccasts%2Crelease_dates&language=en-US"
         d_response = requests.get(details_url, headers=headers)
         d_data = d_response.json()
+
+        release_dates = d_data.get('release_dates', {}).get('results', [])
+        us_release_dates = [release_date for release_date in release_dates if release_date.get('iso_3166_1') == 'US']
 
         streaming_url = movie_url + str(movieid) + '/watch/providers'
         s_response = requests.get(streaming_url, headers=headers)
@@ -261,13 +267,25 @@ class MovieInformationAPI(APIView):
         bg_images = i_data.get('backdrops', {})
         p_images = i_data.get('posters', {})
 
+        mdba_header = {
+            "X-RapidAPI-Key": MDBA_KEY,
+	        "X-RapidAPI-Host": MBDA_HOST
+        }
+        
+        mdba_query = {"r": "json", "i": str(id)}
+        mdba_response = requests.get(MDBA_URL, headers=mdba_header, params=mdba_query)
+        mdba = mdba_response.json()
+
         try:
             return Response({
                 'details': d_data,
-                'streaming': streaming,
+                'streaming': streaming['US'],
                 'imdb_id': id,
                 'backdrops': bg_images,
-                'posters': p_images
+                'posters': p_images,
+                'rating': us_release_dates[0].get('release_dates', [])[0],
+                'ratings': mdba.get('Ratings', {}),
+                'year': mdba.get('Year')
             })
         except ValueError:
             # Handle JSON decoding error

@@ -17,6 +17,7 @@ import NewAW from '../../assets/250x100.png';
 import AuthContext from "../../store/auth-context";
 import { Select, Tooltip } from "@mui/material";
 import { getSearchMovieTv } from "../../lib/aw-api";
+import LogOut from "./Logout";
 
 const TopMenu = () => {
     const nav = useNavigate();
@@ -46,6 +47,20 @@ const TopMenu = () => {
             setSearchTerm('');
         } catch (error) {
             console.error('Error fetching data:', error.message);
+        }
+    };
+
+    const handleKeyPress = async (event) => {
+        if (event.key === 'Enter') {
+            // Perform any action you want when Enter is pressed
+            // For example, submit the search term
+            try {
+                const data = await getSearchMovieTv({searchTerm});
+                nav('/search', {state: {results: data.results, searchTerm: searchTerm}});
+                setSearchTerm('');
+            } catch (error) {
+                console.error('Error fetching data:', error.message);
+            }
         }
     };
 
@@ -86,6 +101,7 @@ const TopMenu = () => {
                                         placeholder="Search..."
                                         value={searchTerm}
                                         onChange={handleInputChange}
+                                        onKeyPress={handleKeyPress}
                                         className="w-full bg-transparent border-none outline-none px-1"
                                     />
                                         <Select
@@ -201,12 +217,7 @@ const TopMenu = () => {
                         Settings
                 </MenuItem>
 
-                <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                        <Logout fontSize="small" />
-                    </ListItemIcon>
-                        Logout
-                </MenuItem>
+                <LogOut close={handleClose} />
             </Menu>
         </Fragment>
     );

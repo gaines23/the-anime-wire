@@ -64,7 +64,7 @@ export async function getLogoutUrl() {
     const data = await response.json();
     
     if (!response.ok) {
-        throw new Error(data.message || 'Login Credentials Rejected');
+        throw new Error(data.message);
     }
 
     return null;

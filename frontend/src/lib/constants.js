@@ -1,3 +1,8 @@
+// TMBD API
+const TMBD_POSTER_w500 = 'https://image.tmdb.org/t/p/w500';
+const TMBD_POSTER_w780 = 'https://image.tmdb.org/t/p/w780';
+const TMBD_POSTER_w45 = 'https://image.tmdb.org/t/p/w45';
+
 let user_token = localStorage.getItem('token');
 
 let login_url = process.env.REACT_APP_LOGIN;
@@ -33,4 +38,7 @@ export {
     new_user_registered,
     get_moveis_tv,
     get_movie_details,
+    TMBD_POSTER_w500,
+    TMBD_POSTER_w780,
+    TMBD_POSTER_w45
 }

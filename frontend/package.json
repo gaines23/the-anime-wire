@@ -45,6 +45,7 @@
     "react-router-dom": "^6.11.0",
     "react-scripts": "^5.0.1",
     "react-virtualized": "^9.22.5",
+    "react-youtube": "^10.1.0",
     "redux": "^4.2.1",
     "use-debounce": "^9.0.4",
     "util": "^0.12.5",

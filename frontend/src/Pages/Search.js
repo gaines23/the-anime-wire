@@ -48,7 +48,7 @@ const Search = () => {
                 }
             
                 <Grid container spacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3, lg: 3, xl: 3 }} className="h-auto py-5 w-full mx-auto overflow-hidden overflow-y-auto">
-                    {getResults === undefined ? 
+                    {getResults === undefined || getResults === '' ? 
                         <>{loading && <LoadingSpinner />}</>
                     : 
                         <>

@@ -1,5 +1,5 @@
-import { Box, Button, Divider, MenuItem, Stack, Tooltip } from "@mui/material";
-import { Fragment, useState, useContext } from 'react';
+import { Box, Divider, Stack, Tooltip } from "@mui/material";
+import { Fragment, useState } from 'react';
 
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
@@ -10,7 +10,7 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi';
 
 import NewAW from '../../assets/150x100.png';
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(true);
@@ -22,13 +22,15 @@ const Sidebar = () => {
     return (
         <Fragment>
             <div className="w-full h-20 mx-auto">
-                <img 
-                    src={NewAW}
-                    className={`h-20 m-auto ${isOpen ? '`w-max' : 'w-full'}`}
-                />
+                <NavLink to="/home/logged_in" className="h-full w-full outline-none">
+                    <img 
+                        src={NewAW}
+                        className={`h-20 m-auto ${isOpen ? '`w-max' : 'w-full'}`}
+                    />
+                </NavLink>
             </div>
 
-            <Box className={`h-full px-1 mr-auto ${isOpen ? 'w-40' : 'w-20'}`}>
+            <Box className={`h-full px-1 mr-auto ${isOpen ? 'w-44' : 'w-20'}`}>
                 <div className="flex grouph-8 w-10 mx-auto">
                     <button
                         className="w-full h-8 w-10 px-2 rounded-lg hover:border hover:border-1 hover:border-text-white/50 outline-none hover:shadow hover:shadow-md hover:shadow-text-white/10"
