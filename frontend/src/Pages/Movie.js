@@ -7,6 +7,8 @@ import StreamingInfo from "../Components/MediaDetails/StreamingInfo";
 import Trailer from "../Components/UI/Trailer";
 import CastCrew from "../Components/MediaDetails/CastCrew";
 import DirProducers from "../Components/MediaDetails/DirProducers";
+import Awards from "../Components/MediaDetails/Awards";
+import Similar from "../Components/MediaDetails/Similar";
 
 const Movie = () => {
     const location = useLocation();
@@ -24,6 +26,10 @@ const Movie = () => {
     const [trailerTitle, setTrailerTitle] = useState('');
     const [getCast, setCast] = useState([]);
     const [getCrew, setCrew] = useState([]);
+    const [getAwards, setAwards] = useState([]);
+    const [totalAwards, setTotalAwards] = useState(null);
+    const [awardsSummary, setAwardsSummary] = useState('');
+    const [getRecs, setRecs] = useState([]);
 
     useEffect(() => {
         sendRequest(location.state.id);
@@ -43,9 +49,15 @@ const Movie = () => {
             setTrailerTitle(data.details.videos['results'][0].title);
             setCast(data.details.casts['cast']);
             setCrew(data.details.casts['crew']);
+            setAwards(data.awards['edges']);
+            setTotalAwards(data.awards.total);
+            setAwardsSummary(data.awards_summary);
+            setRecs(data.details.recommendations['results']);
         }
     }, [status, data, setDetails, setStreaming, setPosterImg, setGenres, 
-        setRating, setRatings, setYear, setTrailer, setTrailerTitle, setCast, setCrew]);
+        setRating, setRatings, setYear, setTrailer, setTrailerTitle, setCast, setCrew,
+        setAwards, setTotalAwards, setAwardsSummary, setRecs
+    ]);
 
     const backgroundStyle = {
         backgroundImage: `url(https://image.tmdb.org/t/p/original/${poster})`,
@@ -61,23 +73,23 @@ const Movie = () => {
             <div className="w-full h-full block ">
                 <div className="basis-full h-103 background-container rounded-lg flex relative" style={backgroundStyle}>
                     <div className="w-full h-100 m-auto">
-                        <div className="w-full h-full p-1 flex flex-row bg-light-grey/10 backdrop-blur-sm border border-solid border-light-grey/30 rounded-md">
+                        <div className="w-full h-full p-1 flex flex-row">
                             <div className="basis-1/5 h-full block">
-                                <img src={`https://image.tmdb.org/t/p/original/${poster_img}`} alt="Movie" className="w-fit h-5/6 object-center rounded-md" />
+                                <img src={`https://image.tmdb.org/t/p/original/${poster_img}`} alt="Movie" className="w-fit h-5/6 object-center rounded-t-md" />
                                     
-                                <div className="w-full h-1/6 m-auto block">
+                                <div className="w-full h-1/6 m-auto block bg-purple-bg rounded-b-lg">
                                     <div className="w-full h-max mx-auto p-1 flex flex-row">
-                                        <p className="text-xs font-thin text-form-purple pr-1 w-max mx-auto">{rating} | {details.runtime} min | {year}</p>                  
+                                        <p className="text-xs font-thin text-text-white pr-1 w-max mx-auto">{rating} | {details.runtime} min | {year}</p>                  
                                     </div>
 
                                     <ul className="w-max flex h-max mx-auto flex-row">
                                         {genres.map(g =>(
-                                            <p kep={g.id} className="text-xs font-thin text-form-purple p-1">{g.name}</p>
+                                            <p kep={g.id} className="text-xs font-thin text-text-white p-1">{g.name}</p>
                                         ))}
                                     </ul>
                                         
                                     <div className="w-full h-max flex flex-row pt-1">
-                                        <ul className="w-max mx-auto flex text-form-purple">
+                                        <ul className="w-max mx-auto flex text-text-white">
                                             {ratings.map(rating => {
                                                 return (
                                                     <Ratings key={rating.Source} ratings={rating} />
@@ -88,9 +100,9 @@ const Movie = () => {
                                 </div>
                             </div>
 
-                            <div className="basis-4/5 block flex-row h-full text-center px-3">
-                                <div className="flex flex-row w-full h-1/6 text-center mb-1">
-                                    <h1 className="w-5/6 h-max m-auto text-form-purple tracking-wider font-extrabold text-4xl">{details.title}</h1>
+                            <div className="basis-4/5 block flex-row h-full px-3 bg-light-grey/10 backdrop-blur-sm border-y border-r border-solid border-light-grey/30 rounded-t-lg rounded-r-lg">
+                                <div className="flex flex-row w-full text-center h-1/6 mb-1 font-extrabold">
+                                    <span className="w-5/6 h-max m-auto text-form-purple tracking-wider font-bold text-4xl">{details.title}</span>
                                 </div>
 
                                 <div className="flex flex-row w-full h-5/6 my-2 px-2">
@@ -128,16 +140,21 @@ const Movie = () => {
                                 </p>
                             </div>
                                 
-                                {/* <div className="w-full h-auto m-auto bg-ec-purple/20 rounded-lg">
+                                <div className="w-full h-auto m-auto bg-purple-bg/20 rounded-lg">
                                     <h1 className="pl-5 pt-2 text-md">Awards</h1>
                                     <div className="h-full pb-3 text-input-fill">
-                                        <Awards id={details.imdb_id} />
+                                        <Awards awards={getAwards} summary={awardsSummary} />
                                     </div>
-                                </div> */}
+                                </div>
                         </div>
                     </div>
                 </div>
+                
+                <div className="w-fill h-full basis-full flex flex-row">
+                    <Similar similar={getRecs} />
+                </div>
             </div>
+
                 {/* {(details.series !== '' || details.series !== undefined) ? (
                     <div className="mt-10">
                         <p className="w-5/6 text-lg">Series</p>

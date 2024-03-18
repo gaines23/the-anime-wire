@@ -78,7 +78,7 @@ find = Find()
 
 IMDB_KEY = get_parameter('/imdb/rapidapi')
 IMDB_HOST = get_parameter('/imdb/rapidapi/url')
-IMDB_URL = "https://imdb8.p.rapidapi.com"
+IMDB_URL = "https://imdb8.p.rapidapi.com/title/v2/"
 
 MDBA_KEY = get_parameter('/mdba/key')
 MDBA_URL = get_parameter('/mdba/url')
@@ -249,7 +249,7 @@ class MovieInformationAPI(APIView):
             "Authorization": tmdb_key
         }
 
-        details_url = movie_url + str(movieid) + "?append_to_response=videos%2Ctrailers%2Cimages%2Ccasts%2Crelease_dates&language=en-US"
+        details_url = movie_url + str(movieid) + "?append_to_response=videos%2Ctrailers%2Cimages%2Ccasts%2Crelease_dates%2Crecommendations&language=en-US"
         d_response = requests.get(details_url, headers=headers)
         d_data = d_response.json()
 
@@ -276,6 +276,15 @@ class MovieInformationAPI(APIView):
         mdba_response = requests.get(MDBA_URL, headers=mdba_header, params=mdba_query)
         mdba = mdba_response.json()
 
+        imdb_headers = {
+            "X-RapidAPI-Key": IMDB_KEY,
+            "X-RapidAPI-Host": IMDB_HOST
+        }
+
+        imdb_query = {"tconst":id,"first":20}
+        imdb_response = requests.get(IMDB_URL + 'get-awards', headers=imdb_headers, params=imdb_query)
+        imdb = imdb_response.json()
+
         try:
             return Response({
                 'details': d_data,
@@ -285,7 +294,9 @@ class MovieInformationAPI(APIView):
                 'posters': p_images,
                 'rating': us_release_dates[0].get('release_dates', [])[0],
                 'ratings': mdba.get('Ratings', {}),
-                'year': mdba.get('Year')
+                'year': mdba.get('Year'),
+                'awards': imdb['data']['title'].get('awardNominations', {}),
+                'awards_summary': mdba.get('Awards'),
             })
         except ValueError:
             # Handle JSON decoding error
