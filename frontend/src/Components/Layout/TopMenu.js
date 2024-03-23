@@ -43,7 +43,7 @@ const TopMenu = () => {
 
         try {
             const data = await getSearchMovieTv({searchTerm});
-            nav('/search', {state: {results: data.results, searchTerm: searchTerm}});
+            nav('/search', {state: {results: data[0], searchTerm: searchTerm}});
             setSearchTerm('');
         } catch (error) {
             console.error('Error fetching data:', error.message);
@@ -56,7 +56,8 @@ const TopMenu = () => {
             // For example, submit the search term
             try {
                 const data = await getSearchMovieTv({searchTerm});
-                nav('/search', {state: {results: data.results, searchTerm: searchTerm}});
+                console.log(data)
+                nav('/search', {state: {results: data, searchTerm: searchTerm}});
                 setSearchTerm('');
             } catch (error) {
                 console.error('Error fetching data:', error.message);

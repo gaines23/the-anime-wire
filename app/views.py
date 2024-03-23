@@ -31,7 +31,7 @@ from django.forms.models import model_to_dict
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny
 from tmdbv3api import TMDb
-from tmdbv3api import Search, Movie, TV, Credit, Collection, Person, Find
+from tmdbv3api import Search, Movie, TV, Credit, Collection, Person, Find, Genre
 
 from .models import (
     ProfileSettings,
@@ -65,9 +65,10 @@ class NewTokenObtainPairView(TokenObtainPairView):
     serializer_class = NewTokenObtainPairSerializer
 
 tmdb = TMDb()
-tmdb.api_key = get_parameter('/tmdb/key')
-TMDB_URL = 'https://api.themoviedb.org/3'
-tmdb_key = get_parameter('/tmdb/bearer')
+TMDB_KEY = get_parameter('/tmdb/key')
+tmdb.api_key = TMDB_KEY
+TMDB_URL = 'https://api.themoviedb.org/3/'
+TMDB_BEARER = get_parameter('/tmdb/bearer')
 
 movie = Movie()
 tv = TV()
@@ -75,6 +76,7 @@ series = Collection()
 person = Person()
 search = Search()
 find = Find()
+genre = Genre()
 
 IMDB_KEY = get_parameter('/imdb/rapidapi')
 IMDB_HOST = get_parameter('/imdb/rapidapi/url')
@@ -212,41 +214,55 @@ class NewUserSelections(APIView):
 
 ## search movies and tv ##
 class SearchAllCategories(APIView):
-    def get(self, request, title, *args, **kwargs):
-        url = IMDB_URL + '/title/v2/find'
-        querystring = {"title": title,
-                       "titleType":"movie,tvSeries,tvMiniSeries,tvMovie,tvSpecial,tvShort", 
-                       "limit":"20",
-                       "sortArg":"moviemeter,asc",
-                       "genre":"anime,animation"
-                    }
+    def get(self, request, title):
+        formatted_title = title.replace(" ", "%20")
+        url = TMDB_URL + 'search/multi?query=' + str(formatted_title) + '&include_adult=false&language=en-US&page=1'
 
         headers = {
-            "X-RapidAPI-Key": IMDB_KEY,
-            "X-RapidAPI-Host": IMDB_HOST
+            "accept": "application/json",
+            "Authorization": TMDB_BEARER
         }
 
-        response = requests.get(url, headers=headers, params=querystring)
+        response = requests.get(url, headers=headers)
+        data = response.json()
+        all_results = data['results']
+
+        # streaming_mov = movie.watch_providers
+        # streaming_tv = tv.watch_providers
+
+        movies = []
+
+        filtered_movies = [x for x in all_results if x.get('media_type') == 'movie' and (16 in x.get('genre_ids', []) or x.get('original_language') == 'ja')]
+        filtered_tv = [x for x in all_results if x.get('media_type') == 'tv' and (16 in x.get('genre_ids', []) or x.get('original_language') == 'ja')]
+
+        # for movie in filtered_movies:
+        #     movie_id = str(movie['id'])
+        #     external_ids_url = f"{TMDB_URL}/movie/{movie_id}/external_ids"
+        #     response = requests.get(external_ids_url, headers=headers)
+        #     external_ids_data = response.json()                
+        #     movies.append((movie, external_ids_data))
 
         try:
-            # Parse the response as JSON
-            json_response = response.json()
-            return Response(json_response, status=status.HTTP_200_OK)
+            return Response({
+                'movies': filtered_movies,
+                'tv': filtered_tv
+            })
         except ValueError:
             # Handle JSON decoding error
             return Response({"error": "Invalid JSON response"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
 
+      
+        
 class MovieInformationAPI(APIView):
     def get(self, request, id, *args, **kwargs):
         find_id = find.find_by_imdb_id(id)
         movieid = find_id.movie_results[0]['id']
 
-        movie_url = TMDB_URL + '/movie/' 
+        movie_url = TMDB_URL + 'movie/' 
 
         headers = {
             "accept": "application/json",
-            "Authorization": tmdb_key
+            "Authorization": TMDB_BEARER
         }
 
         details_url = movie_url + str(movieid) + "?append_to_response=videos%2Ctrailers%2Cimages%2Ccasts%2Crelease_dates%2Crecommendations&language=en-US"

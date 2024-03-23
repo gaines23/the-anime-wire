@@ -11,7 +11,8 @@ const Search = () => {
     const [getSearch, setSearch] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const searchResults = location.state?.results || [];
+    const searchResults = [];
+    console.log(location.state)
 
     useEffect(() => {
         if (searchResults === '') {
@@ -43,7 +44,7 @@ const Search = () => {
         <Fragment>
             <Box className="w-2/3 mx-auto h-full py-3 flex-1">
                 {getResults !== undefined ?
-                    <h1 className="text-lg text-input-fill text-bold">Search Results: {`"${getSearch}"`} </h1>
+                    <h1 className="text-lg text-input-fill text-bold capitalize">Search Results: {`"${getSearch}"`} </h1>
                  :  <h1 className="text-lg text-input-fill text-bold">Search Results: </h1>
                 }
             
@@ -56,13 +57,13 @@ const Search = () => {
                                 <Grid xs={2} sm={3} md={3} lg={4} xl={3} key={index} className="w-full h-24 p-1">
                                     <ul 
                                         className="h-full w-full flex bg-bg-fill/10 hover:bg-bg-fill/20 hover:border rounded-md text-text-white/60 hover:border-aw-teal-border/30 cursor-pointer"
-                                        onClick={() => item.titleType === 'tvSeries' ? handleTv(item.id) : handleMovie(item.id)}
+                                        onClick={() => item.titleType === 'series' ? handleTv(item.imdbID) : handleMovie(item.imdbID)}
                                     >
                                         <div className="w-24 h-20 my-auto mr-auto float-left flex">
-                                            { item.image !== undefined ? ( 
+                                            { item.image !== "N/A" ? ( 
                                                 <img
-                                                    src={item.image.url}
-                                                    alt={item.id}
+                                                    src={item.Poster}
+                                                    alt="N/A"
                                                     className="w-full px-1 h-full rounded-md object-cover m-auto"
                                                 />
                                                 ) : 
@@ -74,7 +75,7 @@ const Search = () => {
 
                                         <div className="w-2/3 h-20 m-auto float-right px-1 inline-grid">
                                             <div className="text-text-white text-xs h-2/3 w-full flex">
-                                                <p className="text-text-white text-sm h-max text-wrap text-left">{item.title}</p>
+                                                <p className="text-text-white text-sm h-max text-wrap text-left">{item.Title}</p>
                                             </div>
 
                                             <div className="text-text-white text-xs h-max mt-auto w-full flex px-1">
