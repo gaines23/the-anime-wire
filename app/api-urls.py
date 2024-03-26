@@ -37,5 +37,5 @@ urlpatterns = [
     path('new-user/registered/selections/', NewUserSelections.as_view(), name='reg_selections'),
 
     path('api/search/all/<str:title>/', SearchAllCategories.as_view(), name='search'),
-    path('api/movie/details/title/<str:id>/', MovieInformationAPI.as_view(), name='movie'),
+    path('api/movie/details/title/<str:id>/<int:mal_id>/', MovieInformationAPI.as_view(), name='movie'),
 ]

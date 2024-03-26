@@ -56,7 +56,6 @@ const TopMenu = () => {
             // For example, submit the search term
             try {
                 const data = await getSearchMovieTv({searchTerm});
-                console.log(data)
                 nav('/search', {state: {results: data, searchTerm: searchTerm}});
                 setSearchTerm('');
             } catch (error) {

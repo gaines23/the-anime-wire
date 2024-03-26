@@ -23,7 +23,7 @@ const Layout = (props) => {
 
                 { isLoggedIn ?
                     <div className="w-screen h-full flex flex-row ">
-                        <div className="w-full basis-1/12 h-full">
+                        <div className="w-full basis-1/12 h-full my-3">
                             <Sidebar />
                         </div>
 

@@ -4,10 +4,7 @@ Definition of views.
 import json
 from .forms import *
 import environ
-import logging
 from datetime import date
-import datetime
-from django.core.paginator import Paginator
 from itertools import groupby
 from collections import defaultdict
 import boto3
@@ -18,20 +15,18 @@ from django.http.response import JsonResponse
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import SessionAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils import timezone
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
 import uuid
-from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Q
-from django.core.exceptions import ValidationError
 from django.forms.models import model_to_dict
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny
 from tmdbv3api import TMDb
 from tmdbv3api import Search, Movie, TV, Credit, Collection, Person, Find, Genre
+from mal import *
 
 from .models import (
     ProfileSettings,
@@ -80,7 +75,7 @@ genre = Genre()
 
 IMDB_KEY = get_parameter('/imdb/rapidapi')
 IMDB_HOST = get_parameter('/imdb/rapidapi/url')
-IMDB_URL = "https://imdb8.p.rapidapi.com/title/v2/"
+IMDB_URL = "https://imdb8.p.rapidapi.com/"
 
 MDBA_KEY = get_parameter('/mdba/key')
 MDBA_URL = get_parameter('/mdba/url')
@@ -211,29 +206,23 @@ class NewUserSelections(APIView):
 
 
 ### SEARCH ###
+    
+        # url = TMDB_URL + 'search/multi?query=' + str(formatted_title) + '&include_adult=false&language=en-US&page=1'
 
-## search movies and tv ##
-class SearchAllCategories(APIView):
-    def get(self, request, title):
-        formatted_title = title.replace(" ", "%20")
-        url = TMDB_URL + 'search/multi?query=' + str(formatted_title) + '&include_adult=false&language=en-US&page=1'
+        # headers = {
+        #     "accept": "application/json",
+        #     "Authorization": TMDB_BEARER
+        # }
 
-        headers = {
-            "accept": "application/json",
-            "Authorization": TMDB_BEARER
-        }
-
-        response = requests.get(url, headers=headers)
-        data = response.json()
-        all_results = data['results']
+        # response = requests.get(url, headers=headers)
+        # data = response.json()
+        # all_results = data['results']
 
         # streaming_mov = movie.watch_providers
         # streaming_tv = tv.watch_providers
 
-        movies = []
-
-        filtered_movies = [x for x in all_results if x.get('media_type') == 'movie' and (16 in x.get('genre_ids', []) or x.get('original_language') == 'ja')]
-        filtered_tv = [x for x in all_results if x.get('media_type') == 'tv' and (16 in x.get('genre_ids', []) or x.get('original_language') == 'ja')]
+        # filtered_movies = [x for x in all_results if x.get('media_type') == 'movie' and (16 in x.get('genre_ids', []) or x.get('original_language') == 'ja')]
+        # filtered_tv = [x for x in all_results if x.get('media_type') == 'tv' and (16 in x.get('genre_ids', []) or x.get('original_language') == 'ja')]
 
         # for movie in filtered_movies:
         #     movie_id = str(movie['id'])
@@ -242,10 +231,63 @@ class SearchAllCategories(APIView):
         #     external_ids_data = response.json()                
         #     movies.append((movie, external_ids_data))
 
+        # filtered_results = [x for x in all_results if (16 in x.get('genre_ids', []) or x.get('original_language') == 'ja')]
+        
+
+## search movies and tv ##
+class SearchAllCategories(APIView):
+    def get(self, request, title):
+        formatted_title = title.replace(" ", "%20")
+        search = AnimeSearch(formatted_title)
+        search_results = search.results[:10]
+
+        url = IMDB_URL + 'v2/search'
+        #params_request = {"searchTerm": formatted_title,"type":"MOVIE|TV","first":"1"}
+
+        #genre_url = IMDB_URL + 'title/v2/get-genres'
+
+        headers = {
+            "X-RapidAPI-Key": IMDB_KEY,
+            "X-RapidAPI-Host": IMDB_HOST
+        }
+
+        all_results = []
+        
+        for s in search_results:
+            title = s.title
+            params_request = {"searchTerm": title,"type":"MOVIE|TV","first":"1"}
+            response = requests.get(url, headers=headers, params=params_request)
+            results = response.json()
+            edges = results.get('data', {}).get('mainSearch', {}).get('edges', [])
+            print(results)
+            
+            # for edge in edges:
+            #     node = edge.get('node', {})
+            #     tmdb_title = node.get('entity', {}).get('originalTitleText', {}).get('text')
+            #     if title.lower() in tmdb_title.lower():
+            #         all_results.append({'mal_id': s.mal_id, 'imdb': node.get('entity', {})})
+
+        # for edge in edges:
+        #     node = edge.get('node', {})
+        #     edge_id = node.get('entity', {}).get('id')  # Assuming this is how you get the ID
+        #     genre_request = {"tconst": edge_id}  # Assuming this is the parameter name for the genre URL
+        #     genre_response = requests.get(genre_url, headers=headers, params=genre_request)
+        #     genre_result = genre_response.json()
+        #     genre_edges = genre_result.get('data', {}).get('title', {}).get('titleGenres', {})
+
+        #     #all_results.append((node.get('entity', {}), genre_edges))
+        #     title = node.get('entity', {}).get('originalTitleText', {}).get('text')
+        #     print(title)
+        #     for s in search.results:
+        #         if title.lower() in s.title.lower():
+        #             mal_id = {'mal_id': s.mal_id}
+        #             all_results.append((node.get('entity', {}), genre_edges, mal_id))
+        #         else:
+        #             all_results.append((node.get('entity', {}), genre_edges))         
+
         try:
             return Response({
-                'movies': filtered_movies,
-                'tv': filtered_tv
+                'results': all_results,
             })
         except ValueError:
             # Handle JSON decoding error
@@ -254,7 +296,7 @@ class SearchAllCategories(APIView):
       
         
 class MovieInformationAPI(APIView):
-    def get(self, request, id, *args, **kwargs):
+    def get(self, request, id, mal_id, *args, **kwargs):
         find_id = find.find_by_imdb_id(id)
         movieid = find_id.movie_results[0]['id']
 
@@ -298,8 +340,19 @@ class MovieInformationAPI(APIView):
         }
 
         imdb_query = {"tconst":id,"first":20}
-        imdb_response = requests.get(IMDB_URL + 'get-awards', headers=imdb_headers, params=imdb_query)
+        imdb_response = requests.get(IMDB_URL + 'title/v2/get-awards', headers=imdb_headers, params=imdb_query)
         imdb = imdb_response.json()
+
+        mal = []
+        if Anime(mal_id) is not None:
+            anime = Anime(mal_id)
+            genres = {'genres': anime.genres}
+            studios = {'studios': anime.studios}
+            characters = {'characters': anime.characters}
+            summary = {'summary': anime.synopsis}
+            related = {'related': anime.related_anime}
+            mal.append(studios, characters, summary, related)
+
 
         try:
             return Response({
@@ -313,6 +366,7 @@ class MovieInformationAPI(APIView):
                 'year': mdba.get('Year'),
                 'awards': imdb['data']['title'].get('awardNominations', {}),
                 'awards_summary': mdba.get('Awards'),
+                'mal': mal
             })
         except ValueError:
             # Handle JSON decoding error

@@ -72,9 +72,9 @@ const Movie = () => {
         <Fragment>
             <div className="w-full h-full block ">
                 <div className="basis-full h-103 background-container rounded-lg flex relative" style={backgroundStyle}>
-                    <div className="w-full h-100 m-auto">
+                    <div className="w-full sm:h-99 md:h-99 lg:h-99 xl:h-100 2xl:h-100 m-auto">
                         <div className="w-full h-full p-1 flex flex-row">
-                            <div className="basis-1/5 h-full block">
+                            <div className="sm:basis-1/4 md:basis-1/4 lg:basis-1/4 xl:basis-1/5 2xl:basis-1/5 h-full block">
                                 <img src={`https://image.tmdb.org/t/p/original/${poster_img}`} alt="Movie" className="w-fit h-5/6 object-center rounded-t-md" />
                                     
                                 <div className="w-full h-1/6 m-auto block bg-purple-bg rounded-b-lg">
@@ -100,7 +100,7 @@ const Movie = () => {
                                 </div>
                             </div>
 
-                            <div className="basis-4/5 block flex-row h-full px-3 bg-light-grey/10 backdrop-blur-sm border-y border-r border-solid border-light-grey/30 rounded-t-lg rounded-r-lg">
+                            <div className="sm:basis-3/4 md:basis-3/4 lg:basis-3/4 xl:basis-4/5 2xl:basis-4/5 block flex-row h-full px-3 bg-light-grey/10 backdrop-blur-sm border-y border-r border-solid border-light-grey/30 rounded-t-lg rounded-r-lg">
                                 <div className="flex flex-row w-full text-center h-1/6 mb-1 font-extrabold">
                                     <span className="w-5/6 h-max m-auto text-form-purple tracking-wider font-bold text-4xl">{details.title}</span>
                                 </div>

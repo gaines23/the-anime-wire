@@ -48,7 +48,7 @@ function App() {
               <Route path='/' element={<Navigate to='/home/logged_in' />} />
               <Route path='/home/logged_in' element={<Home />} />
               <Route path='/search' element={<Search />} />
-              <Route path='/movie/details/title/:id/' element={<Movie />} />
+              <Route path='/movie/details/title/:id/:title_string' element={<Movie />} />
             </Fragment>
           )}
 

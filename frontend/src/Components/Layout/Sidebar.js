@@ -30,8 +30,8 @@ const Sidebar = () => {
                 </NavLink>
             </div>
 
-            <Box className={`h-full px-1 mr-auto ${isOpen ? 'w-44' : 'w-20'}`}>
-                <div className="flex grouph-8 w-10 mx-auto">
+            <Box className={`h-full m-auto ${isOpen ? 'w-36' : 'w-20'}`}>
+                {/* <div className="flex grouph-8 w-10 mx-auto">
                     <button
                         className="w-full h-8 w-10 px-2 rounded-lg hover:border hover:border-1 hover:border-text-white/50 outline-none hover:shadow hover:shadow-md hover:shadow-text-white/10"
                         onClick={handleToggle}
@@ -41,7 +41,7 @@ const Sidebar = () => {
                             {isOpen ? <HiChevronDoubleLeft /> : <HiChevronDoubleRight />}
                         </p>
                     </button>
-                </div>
+                </div> */}
 
                 <div className="w-full h-5/6 inline-block border border-aw-teal/10 bg-purple-bg/30 rounded-md py-2 my-1">
                     <Stack className="h-1/3 w-5/6 m-auto">
